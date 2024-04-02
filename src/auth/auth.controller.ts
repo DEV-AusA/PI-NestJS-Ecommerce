@@ -3,13 +3,11 @@ import { AuthService } from './auth.service';
 
 @Controller('auth')
 export class AuthController {
-    constructor(
-        private readonly authService:AuthService
-    ) {}
+  constructor(private readonly authService: AuthService) {}
 
-    @Get()
-    getAuth() {
-        const auth = this.authService.get();
-        return auth;
-    }
+  @Get()
+  getAuth() {
+    const auth = this.authService.get();
+    return auth;
+  }
 }

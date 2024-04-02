@@ -1,12 +1,15 @@
 import { Injectable } from '@nestjs/common';
+import { UsersRepository } from './users.repository';
 
 @Injectable()
 export class UsersService {
+  //injecto la dependencia UsersRepository
+  constructor(
+    private usersRepository: UsersRepository
+  ) {}
 
-    get() {
-        const users = {
-            message: `Get users here`
-        }
-        return users;
-    }
+  getUsers() {
+    const users = this.usersRepository.getUsers();
+    return users;
+  }
 }

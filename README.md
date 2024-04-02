@@ -24,4 +24,4 @@
 
 ## Description
 
-Proyecto de ecommerce utilizando el [Nest](https://github.com/nestjs/nest).
+Proyecto Backend de un ecommerce utilizando el framework [Nest](https://github.com/nestjs/nest).

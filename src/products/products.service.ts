@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
+import { ProductsRepository } from './products.repository';
 
 @Injectable()
 export class ProductsService {
+  // injecto la dependencia ProductsRepository
+  constructor(private readonly productsRepository: ProductsRepository) {}
 
-    get() {
-        const products = {
-            message: `Get products here.`
-        }
-        return products;
-    }
+  getProducts() {
+    const products = this.productsRepository.getProducts();
+
+    return products;
+  }
 }
