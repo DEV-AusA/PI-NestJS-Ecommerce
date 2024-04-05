@@ -3,18 +3,18 @@ import { IsBoolean, IsNumber, IsString, IsUrl, Length } from 'class-validator';
 export class CreateProductDto {
   @IsString()
   @Length(3)
-  name: string;
+  readonly name: string;
 
   @IsString()
-  description: string;
+  readonly description: string;
 
   @IsNumber()
-  price: number;
+  readonly price: number;
 
   @IsBoolean()
-  stock: boolean;
+  readonly stock: boolean;
 
   @IsString()
   @IsUrl()
-  imgUrl: string;
+  readonly imgUrl: string;
 }
