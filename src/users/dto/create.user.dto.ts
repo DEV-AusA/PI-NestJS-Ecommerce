@@ -18,7 +18,6 @@ export class CreateUserDto {
   @IsString()
   readonly address: string;
 
-  @IsString()
   @IsNumber()
   readonly phone: number;
   
@@ -28,7 +27,6 @@ export class CreateUserDto {
   @IsString()
   readonly city?: string;
   
-  @IsString()
-  @IsDate()
-  readonly createdAt: string;
+  // @IsDate()
+  readonly created_at: Date;
 }

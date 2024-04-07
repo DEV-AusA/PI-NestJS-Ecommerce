@@ -10,10 +10,11 @@ export class AuthRepository {
     async signIn(loginDataDto: LoginDataDto) {
         const userDB = await this.userRepository.getUserByEmail(loginDataDto.email);
 
-        if(loginDataDto.email !== userDB.email || userDB.password !== loginDataDto.password)
+        if(!userDB || userDB.password !== loginDataDto.password)
         throw new UnauthorizedException(`Email o password incorrectos, verifique los datos e intentelo nuevamente.`);
 
-        const message = { message: `Bienvenido nuevamente ${loginDataDto.email}.` }
+        const message = { message: `Bienvenido nuevamente ${userDB.name}.` }
+        // return 'token';
         return message;
     }
 }

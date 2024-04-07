@@ -46,14 +46,14 @@ export class UsersController {
   @UseGuards(AuthGuard)
   @UseInterceptors(FilterPasswordInterceptor) // interceptor filter password
   getUserById(@Param('id') id: string){
-    const user = this.userServices.getUserById(+id)
+    const user = this.userServices.getUserById(id)
     return user;
   }
 
   @Post()
-  @UseInterceptors(DateAdderInterceptor) // interceptor filter password
-  createUser(@Body() createUserDto: CreateUserDto, @Req() request){
-    const newUser = this.userServices.createUser({...createUserDto, createdAt: request.createdAt});
+  @UseInterceptors(DateAdderInterceptor) // interceptor filter DateAdd
+  createUser(@Body() createUserDto: CreateUserDto, @Req() request){    
+    const newUser = this.userServices.createUser({...createUserDto, created_at: request.createdAt});
     return newUser;
   }
 
@@ -63,14 +63,14 @@ export class UsersController {
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto)
   {
-    const messageUserUpdated = this.userServices.updateUser(+id, updateUserDto)
+    const messageUserUpdated = this.userServices.updateUser(id, updateUserDto)
     return messageUserUpdated;
   }
 
   @Delete(':id')
   @UseGuards(AuthGuard)
   deleteUser(@Param('id') id: string){
-    const messageUserDeleted = this.userServices.deleteUser(+id);
+    const messageUserDeleted = this.userServices.deleteUser(id);
     return messageUserDeleted;
   }
 }

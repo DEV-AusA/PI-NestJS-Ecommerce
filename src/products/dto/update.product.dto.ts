@@ -1,4 +1,4 @@
-import { IsBoolean, IsNumber, IsString, IsUrl, Length } from "class-validator";
+import { IsBoolean, IsNumber, IsPositive, IsString, IsUrl, Length } from "class-validator";
 
 export class UpdateProductDto {
 
@@ -13,12 +13,13 @@ export class UpdateProductDto {
     readonly description?: string;
   
     @IsNumber()
+    @IsPositive()
     readonly price?: number;
   
-    @IsBoolean()
-    readonly stock?: boolean;
+    @IsNumber()
+    readonly stock?: number;
   
     @IsString()
     @IsUrl()
-    readonly imgUrl?: string;
+    readonly img_url?: string;
 }

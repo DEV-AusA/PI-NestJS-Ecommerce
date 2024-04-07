@@ -5,18 +5,21 @@ import { Observable } from 'rxjs';
 export class DateAdderInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
 
-    const created = new Date()
-
-    const formatDate = created.toLocaleDateString('es-AR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      // hour: 'numeric',
-      // minute: '2-digit'
-    })
-    const request = context.switchToHttp().getRequest() //obtengo la request
-    // agrego la prop a la request
-    request.createdAt = formatDate;
+    const created = new Date();
+    const request = context.switchToHttp().getRequest();
+    
+    // const created = new Date()
+    // const formatDate = created.toLocaleDateString('es-AR', {
+      //   day: '2-digit',
+      //   month: '2-digit',
+      //   year: 'numeric',
+      //   // hour: 'numeric',
+      //   // minute: '2-digit'
+      // })
+      // const request = context.switchToHttp().getRequest() //obtengo la request
+      // agrego la prop a la request
+      // request.createdAt = formatDate;
+      request.createdAt = created; // Asignar la instancia de Date en lugar de la cadena formateada
     return next.handle();
   }
 }

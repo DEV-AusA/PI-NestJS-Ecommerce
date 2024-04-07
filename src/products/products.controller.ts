@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query, Res, UseGuards } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { Response } from 'express';
-import { CreateProductDto } from './dto/create.product.dto';
+import { ProductDto } from './dto/product.dto';
 import { UpdateProductDto } from './dto/update.product.dto';
 import { PaginationProductDto } from './dto/pagination.product.dto';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
@@ -18,14 +18,6 @@ export class ProductsController {
     return products;
   }
 
-  // // response custom
-  // @Get('message')
-  // getMessage(@Res() res: Response){
-  //   res.status(200).json({
-  //     message: `Este es un message custom`
-  //   })
-  // }
-
   @Get(':id')
   getProducById(@Param('id') id: string){
     const productById = this.productsService.getProductById(+id);
@@ -34,10 +26,16 @@ export class ProductsController {
 
   @Post()
   @UseGuards(AuthGuard)
-  createProduct(@Body() createProductDto: CreateProductDto){
-    const messageNewProduct = this.productsService.createProduct(createProductDto);
+  createProduct(@Body() productDto: ProductDto){
+    const messageNewProduct = this.productsService.createProduct(productDto);
     return messageNewProduct;
   }
+
+  // @Post('seeder')
+  // @UseGuards(AuthGuard)
+  // addProduct(@Body() createProductDto: CreateProductDto){
+  //   return;
+  // }
   
   @Put(':id')
   @UseGuards(AuthGuard)

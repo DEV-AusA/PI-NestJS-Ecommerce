@@ -16,7 +16,7 @@ export class UsersService {
       return users;
     }
 
-    getUserById(id: number) {
+    getUserById(id: string) {
       const user = this.usersRepository.getUserById(id);
       return user;
     }
@@ -31,12 +31,12 @@ export class UsersService {
       return newUser;
     }
 
-    updateUser(id: number, updateUserDto: UpdateUserDto) {
+    updateUser(id: string, updateUserDto: UpdateUserDto) {
       const messageUserUpdated = this.usersRepository.updateUser(id, updateUserDto);
       return messageUserUpdated;
     }
 
-    deleteUser(id: number) {
+    deleteUser(id: string) {
       const messageUserDeleted = this.usersRepository.deleteUser(id);
       return messageUserDeleted;
     }

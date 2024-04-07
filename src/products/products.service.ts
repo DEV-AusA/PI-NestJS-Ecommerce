@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ProductsRepository } from './products.repository';
-import { CreateProductDto } from './dto/create.product.dto';
+import { ProductDto } from './dto/product.dto';
 import { UpdateProductDto } from './dto/update.product.dto';
 import { PaginationProductDto } from './dto/pagination.product.dto';
 
@@ -20,8 +20,8 @@ export class ProductsService {
     return productById;
   }
 
-  createProduct(createProductDto: CreateProductDto) {
-    const messageNewProduct = this.productsRepository.createProduct(createProductDto);
+  createProduct(productDto: ProductDto) {
+    const messageNewProduct = this.productsRepository.createProduct(productDto);
     return messageNewProduct;
   }
 
