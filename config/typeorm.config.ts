@@ -13,7 +13,7 @@ const config = {
     database: process.env.DB_NAME,
     dropSchema: true, // <= esta propiedad borra toda la DB si esta activado
     synchronize: true,
-    // logging: true, // ["error"], <= solo muestre errores de la DB
+    logging: true, // ["error"], <= solo muestre errores de la DB
     subscribers: [],
     entities: ['dist/**/*.entity{.ts,.js}'],
     migrations: ['dist/migrations/*{.ts,.js}'],

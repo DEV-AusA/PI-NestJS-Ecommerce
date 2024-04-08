@@ -1,4 +1,4 @@
-import { IsBoolean, IsNumber, IsPositive, IsString, IsUrl, Length } from 'class-validator';
+import { IsArray, IsBoolean, IsNumber, IsPositive, IsString, IsUrl, Length } from 'class-validator';
 
 export class ProductDto {
   @IsString()
@@ -17,5 +17,9 @@ export class ProductDto {
 
   @IsString()
   @IsUrl()
-  readonly img_url: string;
+  readonly imgUrl: string;
+
+  @IsString({ each: true })
+  // @IsArray()
+  readonly category: string[] | string
 }

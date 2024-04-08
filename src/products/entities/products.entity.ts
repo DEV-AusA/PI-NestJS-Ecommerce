@@ -1,15 +1,14 @@
-import { Category } from "src/categories/entities/category.entity";
+import { Categories } from "src/categories/entities/category.entity";
 import { OrderDetails } from "src/orders/entities/order-details.entity";
-import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({
     name: "products"   //* <= este  sera el nombre en la tabla de nuestra DB, se usa en plural para evitar conoflicto de nombres
 })
 export class Products {
 
-    // @PrimaryColumn({ type:'uuid', unique: true, nullable: false})
     @PrimaryGeneratedColumn('uuid')
-    id: number;
+    id: string;
 
     @Column({ type:'varchar', unique: true, length: 50, nullable: false })
     name: string;
@@ -26,8 +25,13 @@ export class Products {
     @Column({ type:'varchar', default: 'https://gesisarg.com/sistema-gestion/res/archivos/imagen_articulo_por_defecto.jpg' })
     img_url: string;
 
-    @OneToMany( () => Category, ((category) =>category.id))
-    category_id: Category[];
+    @OneToMany(
+        () => Categories,
+        (category) => category.products,
+        { cascade: true, eager: true }
+     )
+    @JoinColumn({ name: 'category_id' })
+    category: Categories[];
 
     @ManyToMany(() => OrderDetails, orderDetail => orderDetail.order_id)
     @JoinTable()

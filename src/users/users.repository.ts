@@ -149,13 +149,13 @@ export class UsersRepository {
   async updateUser(id: string, updateUserDto: UpdateUserDto) {
     //verifico si existe en la DB
     await this.getUserById(id);
-    // hago un preload de los datos de updateUserDto
-    const user = await this.userRepository.preload({
-      id,
-      ...updateUserDto
-    })
-
+    
     try {
+      // creo un preload de los datos de updateUserDto para la DB
+      const user = await this.userRepository.preload({
+        id,
+        ...updateUserDto
+      })
       //save del user updated
       await this.userRepository.save(user)
       const messageUserUpdated = { message: `Datos actualizados del usuario con Id ${id} correctamente.` };

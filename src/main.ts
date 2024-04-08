@@ -18,7 +18,7 @@ async function bootstrap() {
 
   // preload data
   const dataLoaderService = app.get(DataLoaderService);
-  await dataLoaderService.loadCategoriesFromJson();
+  // await dataLoaderService.loadCategoriesFromJson();
   await dataLoaderService.loadUsersFromJson();
 
   await app.listen(3000);

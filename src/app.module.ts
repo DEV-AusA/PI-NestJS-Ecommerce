@@ -8,7 +8,7 @@ import { CategoriesModule } from './categories/categories.module';
 import { OrdersModule } from './orders/orders.module';
 import typeormConfig from 'config/typeorm.config';
 import { DataLoaderService } from './helpers/preloa-data';
-import { Category } from './categories/entities/category.entity';
+import { Categories } from './categories/entities/category.entity';
 import { User } from './users/entities/user.entity';
 
 @Module({
@@ -21,7 +21,7 @@ import { User } from './users/entities/user.entity';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => configService.get('typeorm'),
     }),
-    TypeOrmModule.forFeature([User, Category]), // preload data categories
+    TypeOrmModule.forFeature([User, Categories]), // preload data categories
     UsersModule, ProductsModule, AuthModule, CategoriesModule, OrdersModule],
   controllers: [],
   providers: [DataLoaderService], // preload data DataLoaderService
