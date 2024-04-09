@@ -11,7 +11,7 @@ const config = {
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    dropSchema: true, // <= esta propiedad borra toda la DB si esta activado
+    // dropSchema: true, // <= esta propiedad borra toda la DB si esta activado
     synchronize: true,
     logging: true, // ["error"], <= solo muestre errores de la DB
     subscribers: [],

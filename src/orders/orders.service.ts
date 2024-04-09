@@ -7,8 +7,8 @@ export class OrdersService {
 
   constructor(private readonly ordersRepository: OrdersRepository) {}
   
-  getOrder() {
-    return this.ordersRepository.getOrder();
+  getOrder(id: string) {
+    return this.ordersRepository.getOrder(id);
   }
   
   addOrder(createOrderDto: CreateOrderDto) {

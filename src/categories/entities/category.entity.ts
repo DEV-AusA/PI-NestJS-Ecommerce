@@ -17,6 +17,5 @@ export class Categories {
         (products) => products.category,
         { onDelete: 'CASCADE' } // borrar products con sus categories
     )
-    @JoinColumn()
     products: Products;
 }

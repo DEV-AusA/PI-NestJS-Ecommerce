@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Headers, HttpCode, Param, Post, Put, Query, Req, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Headers, HttpCode, Param, ParseUUIDPipe, Post, Put, Query, Req, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create.user.dto';
 import { UpdateUserDto } from './dto/update.user.dto';
@@ -45,7 +45,7 @@ export class UsersController {
   @Get(':id')
   @UseGuards(AuthGuard)
   @UseInterceptors(FilterPasswordInterceptor) // interceptor filter password
-  getUserById(@Param('id') id: string){
+  getUserById(@Param('id', ParseUUIDPipe) id: string){
     const user = this.userServices.getUserById(id)
     return user;
   }
@@ -60,7 +60,7 @@ export class UsersController {
   @Put(':id')
   @UseGuards(AuthGuard)
   updateUser(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updateUserDto: UpdateUserDto)
   {
     const messageUserUpdated = this.userServices.updateUser(id, updateUserDto)
@@ -69,7 +69,7 @@ export class UsersController {
 
   @Delete(':id')
   @UseGuards(AuthGuard)
-  deleteUser(@Param('id') id: string){
+  deleteUser(@Param('id', ParseUUIDPipe) id: string){
     const messageUserDeleted = this.userServices.deleteUser(id);
     return messageUserDeleted;
   }

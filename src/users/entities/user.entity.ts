@@ -1,12 +1,11 @@
 import { Orders } from "src/orders/entities/orders.entity";
-import { Column, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({
     name: "users"   //* <= este  sera el nombre en la tabla de nuestra DB, se usa en plural para evitar conoflicto de nombres
 })
 export class User {
 
-    // @PrimaryColumn({ type:'uuid', unique: true, nullable: false})
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
@@ -34,6 +33,7 @@ export class User {
     @Column({ type: 'timestamp' }) // Esto podria ser 'date'(fecha)
     created_at: Date;
 
-    @OneToMany( () => Orders, ((order) =>order.id))
+    @OneToMany( () => Orders, ((order) =>order.order_details))
+    @JoinColumn()
     orders_id: Orders[]
 }

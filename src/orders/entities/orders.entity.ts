@@ -1,5 +1,5 @@
 import { User } from "src/users/entities/user.entity";
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { OrderDetails } from "./order-details.entity";
 
 @Entity({
@@ -7,18 +7,18 @@ import { OrderDetails } from "./order-details.entity";
 })
 export class Orders {
 
-    // @PrimaryColumn({ type:'uuid', unique: true, nullable: false})
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column({ type:'varchar', length: 50, nullable: false })
-    date: string;
+    @Column({ type:'timestamp' }) // Esto podria ser 'date'(fecha)
+    date: Date;
     
-    @OneToMany( () => User, ((user) =>user.id))
-    user_id: User[]
-
-    @OneToOne(() => OrderDetails)
-    @JoinColumn()  
+    @OneToOne(
+        () => OrderDetails, orderDetails => orderDetails.order_id,
+        {cascade: true}
+    )
     order_details: OrderDetails;
-
+    
+    @ManyToOne( () => User, ((user) =>user.orders_id))
+    user_id: User
 }

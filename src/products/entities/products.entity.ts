@@ -30,10 +30,12 @@ export class Products {
         (category) => category.products,
         { cascade: true, eager: true }
      )
-    @JoinColumn({ name: 'category_id' })
+    @JoinColumn()
     category: Categories[];
 
-    @ManyToMany(() => OrderDetails, orderDetail => orderDetail.order_id)
-    @JoinTable()
+    @ManyToMany(() => OrderDetails, orderDetail => orderDetail.products)
+    @JoinTable({
+        name: 'order_details_products'
+    })
     order_details: OrderDetails[];
 }

@@ -7,18 +7,22 @@ import { Products } from "src/products/entities/products.entity";
 })
 export class OrderDetails {
 
-    // @PrimaryColumn({ type:'uuid', unique: true, nullable: false})
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
     @Column({ type: 'decimal', precision: 10, scale: 2, nullable: false })
     price: number;
 
-    @OneToOne(() => Orders)
+    @OneToOne(() => Orders, order => order.order_details)
     @JoinColumn()  
     order_id: Orders;
 
-    @ManyToMany(() => Products, product => product.order_details)
-    @JoinTable()
+    @ManyToMany(
+        () => Products, products => products.order_details,
+        {cascade: true, eager: true}
+    )
+    @JoinTable({
+        name: 'order_details_products'
+    })
     products: Products[];
 }
