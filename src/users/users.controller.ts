@@ -16,12 +16,13 @@ export class UsersController {
   @UseGuards(AuthGuard)
   @UseInterceptors(FilterPasswordInterceptor) // interceptor filter password
   getUser(@Query('name') name?: string) {
-    const users = this.userServices.getUsers();
+
     // si mandan el name, retorna ese user
     if (name) {
       return this.userServices.getUserByName(name);
     }
-    // console.log(AuthGuard);
+
+    const users = this.userServices.getUsers();
     
     return users;
   }
@@ -45,17 +46,20 @@ export class UsersController {
   @Get(':id')
   @UseGuards(AuthGuard)
   @UseInterceptors(FilterPasswordInterceptor) // interceptor filter password
-  getUserById(@Param('id', ParseUUIDPipe) id: string){
+  getUserById(@Param('id', ParseUUIDPipe) id: string, @Req() request){
+
+    console.log(request.user);
+    
     const user = this.userServices.getUserById(id)
     return user;
   }
 
-  @Post()
-  @UseInterceptors(DateAdderInterceptor) // interceptor filter DateAdd
-  createUser(@Body() createUserDto: CreateUserDto, @Req() request){    
-    const newUser = this.userServices.createUser({...createUserDto, created_at: request.createdAt});
-    return newUser;
-  }
+  // @Post()
+  // @UseInterceptors(DateAdderInterceptor) // interceptor filter DateAdd
+  // createUser(@Body() createUserDto: CreateUserDto, @Req() request){    
+  //   const newUser = this.userServices.createUser({...createUserDto, created_at: request.createdAt});
+  //   return newUser;
+  // }
 
   @Put(':id')
   @UseGuards(AuthGuard)
@@ -63,7 +67,7 @@ export class UsersController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateUserDto: UpdateUserDto)
   {
-    const messageUserUpdated = this.userServices.updateUser(id, updateUserDto)
+    const messageUserUpdated = this.userServices.updateUser(id, updateUserDto);
     return messageUserUpdated;
   }
 

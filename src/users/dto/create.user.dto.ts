@@ -16,7 +16,10 @@ export class CreateUserDto {
   @IsString()
   @MinLength(8)
   @MaxLength(15)
-  @Matches( /(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, { message: `La contraseña  debe tener una Letra en mayuscula, una minuscula y un numero.`} )
+  @Matches(
+    /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*\W)(?!.*\s).{8,15}$/,
+    { message: `La contraseña debe tener minimo 8 digitos, una letra en mayuscula, una minuscula , un numero y un caracter especial.`}
+  )
   readonly password: string;
 
   @IsNotEmpty()
@@ -31,15 +34,17 @@ export class CreateUserDto {
   
   @IsNotEmpty()
   @IsString()
-  @MinLength(5)
+  @MinLength(3)
   @MaxLength(20)
   readonly country?: string;
   
   @IsNotEmpty()
   @IsString()
-  @MinLength(5)
+  @MinLength(3)
   @MaxLength(20)
   readonly city?: string;
+
+  readonly last_login?: Date;
   
   // @IsDate()
   readonly created_at: Date;

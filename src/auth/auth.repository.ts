@@ -1,20 +1,28 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { LoginDataDto } from "./dto/auth.login.dto";
 import { UsersRepository } from "src/users/users.repository";
+import { InjectRepository } from "@nestjs/typeorm";
+import { User } from "src/users/entities/user.entity";
+import { Repository } from "typeorm";
+import * as bcrypt from "bcrypt";
+import { CreateUserDto } from "src/users/dto/create.user.dto";
 
 @Injectable()
 export class AuthRepository {
 
-    constructor(private readonly userRepository: UsersRepository){}
+    constructor(
+        private readonly userRepository: UsersRepository,
+        @InjectRepository(User)
+        private readonly userRespository: Repository<User>
+    ){}
 
-    async signIn(loginDataDto: LoginDataDto) {
-        const userDB = await this.userRepository.getUserByEmail(loginDataDto.email);
+    async signUp(createUserDto: CreateUserDto) {
+        // bcrypt en action
+        const hashedPassword = await bcrypt.hash(createUserDto.password, 10); // 10 nivel de seguridad
+        // cargo user completo
+        const registerOk = await this.userRepository.createUser({ ...createUserDto, password: hashedPassword, last_login: new Date});
 
-        if(!userDB || userDB.password !== loginDataDto.password)
-        throw new UnauthorizedException(`Email o password incorrectos, verifique los datos e intentelo nuevamente.`);
-
-        const message = { message: `Bienvenido nuevamente ${userDB.name}.` }
-        // return 'token';
-        return message;
+        // const registerOk = { message: `Usuario creado correctamente`, registerOk};        
+        return registerOk;
     }
 }

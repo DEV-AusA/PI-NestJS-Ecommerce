@@ -104,17 +104,13 @@ export class OrdersRepository {
           products: onlyProducts,
         });
               
-        await queryRunner.manager.save(newOrderDetails);
+        const newOrderDetailsSaved = await queryRunner.manager.save(newOrderDetails);
 
         await queryRunner.commitTransaction()
 
-        // const { order_id, price } = newOrderDetails;        
-        // return {order_id: order_id.id, price};
-        return newOrderDetails
-      }      
-      // console.log(newOrderDetails);
-      // throw new NotFoundException(`Error para rollback`)
-        
+        const lastOrderDetails = this.ordersDetailsRepository.findOneBy({ id: newOrderDetailsSaved.id})
+        return lastOrderDetails
+      }        
     }
     catch (error) {
         await queryRunner.rollbackTransaction();

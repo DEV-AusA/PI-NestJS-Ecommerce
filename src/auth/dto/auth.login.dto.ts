@@ -7,10 +7,10 @@ export class LoginDataDto {
     email: string;
 
     @IsString()
-    @MinLength(5)
-    @MaxLength(10)
-    @Matches(
-        /(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, { message: `La contraseña  debe tener una Letra en mayuscula, una minuscula y un numero.`}
-    )
+    @MinLength(8)
+    @MaxLength(15)
+    // @Matches(
+    //     /(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, { message: `La contraseña  debe tener una Letra en mayuscula, una minuscula y un numero.`}
+    // )
     password: string;
 }

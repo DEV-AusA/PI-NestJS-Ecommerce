@@ -7,10 +7,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CategoriesModule } from './categories/categories.module';
 import { OrdersModule } from './orders/orders.module';
 import typeormConfig from 'config/typeorm.config';
-import { DataLoaderService } from './helpers/preloa-data';
-import { Categories } from './categories/entities/category.entity';
+import { DataLoaderService } from './helpers/preload.data.helper';
 import { User } from './users/entities/user.entity';
 import { FilesModule } from './files/files.module';
+import { JwtModule } from '@nestjs/jwt';
+import { Products } from './products/entities/products.entity';
+import { configJwt } from "../config/jwt.config";
 
 @Module({
   imports: [
@@ -22,8 +24,10 @@ import { FilesModule } from './files/files.module';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => configService.get('typeorm'),
     }),
-    TypeOrmModule.forFeature([User, Categories]), // preload data categories
-    UsersModule, ProductsModule, AuthModule, CategoriesModule, OrdersModule, FilesModule],
+    TypeOrmModule.forFeature([User, Products]), // preload data categories
+    UsersModule, ProductsModule, AuthModule, CategoriesModule, OrdersModule, FilesModule,
+    JwtModule.register( configJwt )
+  ],
   controllers: [],
   providers: [DataLoaderService], // preload data DataLoaderService
 })

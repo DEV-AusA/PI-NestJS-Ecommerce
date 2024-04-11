@@ -15,7 +15,7 @@ export class User {
     @Column({ type:'varchar', length: 50, nullable: false, unique: true }) // unico 
     email: string;
 
-    @Column({ type:'varchar', length: 20, nullable: false })
+    @Column({ type:'text', nullable: false })
     password: string;
 
     @Column({type: 'integer'})
@@ -29,6 +29,12 @@ export class User {
 
     @Column({ type: 'varchar', length: 50 })
     city?: string;
+
+    @Column({ default: true, nullable: false })
+    active: boolean;
+  
+    @Column()
+    last_login: Date;
 
     @Column({ type: 'timestamp' }) // Esto podria ser 'date'(fecha)
     created_at: Date;

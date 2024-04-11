@@ -100,7 +100,7 @@ export class UsersRepository {
       })
       //save del user updated
       await this.userRepository.save(user)
-      const messageUserUpdated = { message: `Datos actualizados del usuario con Id ${id} correctamente.` };
+      const messageUserUpdated = { message: `Datos del usuario con Id ${id} actualizados correctamente.` };
       return messageUserUpdated;
 
     } catch (error) {
