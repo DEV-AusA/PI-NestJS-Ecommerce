@@ -26,7 +26,7 @@ import { configJwt } from "../config/jwt.config";
     }),
     TypeOrmModule.forFeature([User, Products]), // preload data categories
     UsersModule, ProductsModule, AuthModule, CategoriesModule, OrdersModule, FilesModule,
-    JwtModule.register( configJwt )
+    JwtModule.register( configJwt ),
   ],
   controllers: [],
   providers: [DataLoaderService], // preload data DataLoaderService

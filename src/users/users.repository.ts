@@ -31,8 +31,9 @@ export class UsersRepository {
     if (isUUID(id)) {
       user = await this.userRepository.findOneBy({ id });
     }    
-    if (!user) throw new NotFoundException(`El usuario con id ${id} no existe.`) //Exception Filter de Nest      
-    return user;
+    if (!user) throw new NotFoundException(`El usuario con id ${id} no existe.`) //Exception Filter de Nest
+    const { isAdmin, ...profileUser } = user;
+    return profileUser;
   }
 
   async getUserByName(name: string) {

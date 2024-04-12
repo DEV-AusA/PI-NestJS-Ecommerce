@@ -39,7 +39,13 @@ export class User {
     @Column({ type: 'timestamp' }) // Esto podria ser 'date'(fecha)
     created_at: Date;
 
-    @OneToMany( () => Orders, ((order) =>order.order_details))
+    @OneToMany(
+        () => Orders, ((order) =>order.user_id),
+        { eager: true }
+    )
     @JoinColumn()
     orders_id: Orders[]
+
+    @Column( { name:'is_admin', default: false } )
+    isAdmin: boolean;
 }

@@ -5,6 +5,9 @@ import { ProductDto } from './dto/products.dto';
 import { UpdateProductDto } from './dto/update.product.dto';
 import { PaginationProductDto } from './dto/pagination.product.dto';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from 'src/roles.enum';
+import { RolesGuard } from 'src/guards/roles.guard';
 
 @Controller('products')
 export class ProductsController {
@@ -44,7 +47,8 @@ export class ProductsController {
   }
   
   @Put(':id')
-  @UseGuards(AuthGuard)
+  @Roles(Role.Admin)
+  @UseGuards(AuthGuard, RolesGuard) //RolGuard
   updateProduct(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateProducDto: UpdateProductDto) {

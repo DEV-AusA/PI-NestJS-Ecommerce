@@ -14,22 +14,25 @@ export class AuthGuard implements CanActivate {
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
-
+    // obtengo request del context
     const request = context.switchToHttp().getRequest();
+    // valido si hay token
     const isToken = request.headers['authorization'];
-    if(!isToken) throw new UnauthorizedException('Necesitas autorizacion para esta seccion.');
+    if(!isToken) throw new UnauthorizedException('Necesitas loguearte para acceder a esta seccion.');
     
-    // tomo el valor del Bearer
+    // tomo el valor despues de 'Bearer'
     const token = request.headers['authorization'].split(' ')[1] ?? '';
 
     try {
-      const secret = process.env.JWT_SECRET;
-      const payload = this.jwtService.verify(token, { secret }); //verificacion de la clase secret
+      const secret = process.env.JWT_SECRET; // palabra secreta de VarEnt
+      const payload = this.jwtService.verify(token, { secret }); //JWT en accion, verifica la palabra secreta del token
       payload.iat = new Date(payload.iat * 1000);
       payload.exp = new Date(payload.exp * 1000);
-      // payload.roles = [ 'admin' ];
-      request.user = payload;
-      // console.log(payload);      
+      payload.isAdmin
+      ? payload.roles = [ 'admin' ]
+      : payload.roles = [ 'user' ];
+      request.user = payload; // cargo el payload como prop user de la request
+            
       return true;
 
     }

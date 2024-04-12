@@ -1,4 +1,5 @@
-import { IsEmail, IsString, Matches, MaxLength, MinLength } from "class-validator";
+import { IsEmail, IsNotEmpty, IsString, Matches, MaxLength, MinLength, Validate } from "class-validator";
+import { MatchPassword } from "src/decorators/match.password.decorator";
 
 export class LoginDataDto {
 
@@ -6,11 +7,16 @@ export class LoginDataDto {
     @IsEmail()
     email: string;
 
+    @IsNotEmpty()
     @IsString()
     @MinLength(8)
     @MaxLength(15)
-    // @Matches(
-    //     /(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, { message: `La contraseña  debe tener una Letra en mayuscula, una minuscula y un numero.`}
-    // )
     password: string;
+
+    @IsNotEmpty()
+    @IsString()
+    @MinLength(8)
+    @MaxLength(15)
+    @Validate(MatchPassword, ['password'])
+    confirmPassword: string;
 }

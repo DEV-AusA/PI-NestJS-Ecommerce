@@ -5,6 +5,9 @@ import { UpdateUserDto } from './dto/update.user.dto';
 import { FilterPasswordInterceptor } from 'src/interceptors/filterPassword.interceptor';
 import { DateAdderInterceptor } from 'src/interceptors/dateAdder.interceptor';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from 'src/roles.enum';
+import { RolesGuard } from 'src/guards/roles.guard';
 
 @Controller('users') //     <= endPoint
 export class UsersController {
@@ -13,7 +16,8 @@ export class UsersController {
     private readonly userServices: UsersService ) {}
 
   @Get()
-  @UseGuards(AuthGuard)
+  @Roles(Role.Admin) // Roles
+  @UseGuards(AuthGuard, RolesGuard) // RolesGuard
   @UseInterceptors(FilterPasswordInterceptor) // interceptor filter password
   getUser(@Query('name') name?: string) {
 
@@ -22,21 +26,26 @@ export class UsersController {
       return this.userServices.getUserByName(name);
     }
 
-    const users = this.userServices.getUsers();
-    
+    const users = this.userServices.getUsers();    
     return users;
   }
 
-  // @Get('profile')
-  // @UseInterceptors(FilterPasswordInterceptor) // interceptor filter password
-  // getUserProfile(@Headers('token') token?: string){
-  //   if (token !== "12345") {
-  //     return { message: `Sin acceso` };
-  //   }
-  //   return { message: `Acceso al perfil de usuario` };
-  // }
+  @Get('admin')
+  @Roles(Role.Admin) // Rol Guard TEST
+  @UseGuards(AuthGuard, RolesGuard) // 1° valido el login y token 2° valido el rol
+  getAdmin() {
+    return 'Ruta ADMIN X ACA';
+  }
 
-  // cafetera custom code error 418
+  @Get('auth0/protected')
+  getAuth0(@Req() request: any) {
+    //recibo la data de registro de Auth0
+    console.log(request.oidc.user);
+    // function que retorna true del login de Auth0
+    console.log(request.oidc.isAuthenticated());    
+  }
+
+  // Custom code error 418
   @HttpCode(418)
   @Get('coffee')
   getCoffee(){
@@ -46,20 +55,11 @@ export class UsersController {
   @Get(':id')
   @UseGuards(AuthGuard)
   @UseInterceptors(FilterPasswordInterceptor) // interceptor filter password
-  getUserById(@Param('id', ParseUUIDPipe) id: string, @Req() request){
-
-    console.log(request.user);
+  getUserById(@Param('id', ParseUUIDPipe) id: string){
     
     const user = this.userServices.getUserById(id)
     return user;
   }
-
-  // @Post()
-  // @UseInterceptors(DateAdderInterceptor) // interceptor filter DateAdd
-  // createUser(@Body() createUserDto: CreateUserDto, @Req() request){    
-  //   const newUser = this.userServices.createUser({...createUserDto, created_at: request.createdAt});
-  //   return newUser;
-  // }
 
   @Put(':id')
   @UseGuards(AuthGuard)

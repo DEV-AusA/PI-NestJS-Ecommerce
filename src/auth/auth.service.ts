@@ -39,8 +39,10 @@ export class AuthService {
     if(!passwordValid) throw new UnauthorizedException(`Email o password incorrectos, verifique los datos e intentelo nuevamente.`);
     // preparo datos para la firma
     const userPayload= {
+      // cargo datos para el cuerpo del payload
       id: user.id,
       email: user.email,
+      isAdmin: user.isAdmin, // cargo el rol para verificarlo con el role.Guard
     };
     // firmo el newToken
     const token = this.jwtService.sign(userPayload);
