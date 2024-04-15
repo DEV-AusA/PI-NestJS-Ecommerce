@@ -6,16 +6,19 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CategoriesModule } from './categories/categories.module';
 import { OrdersModule } from './orders/orders.module';
-import typeormConfig from 'config/typeorm.config';
+import typeormConfig from '../config/typeorm.config';
 import { DataLoaderService } from './helpers/preload.data.helper';
 import { User } from './users/entities/user.entity';
 import { FilesModule } from './files/files.module';
 import { JwtModule } from '@nestjs/jwt';
 import { Products } from './products/entities/products.entity';
 import { configJwt } from "../config/jwt.config";
+import { SeedModule } from './seed/seed.module';
+import { ConsultsModule } from './consults/consults.module';
 
 @Module({
   imports: [
+    UsersModule, ProductsModule, AuthModule, CategoriesModule, OrdersModule, FilesModule,
     ConfigModule.forRoot({
       isGlobal: true,
       load: [typeormConfig]
@@ -25,8 +28,9 @@ import { configJwt } from "../config/jwt.config";
       useFactory: (configService: ConfigService) => configService.get('typeorm'),
     }),
     TypeOrmModule.forFeature([User, Products]), // preload data categories
-    UsersModule, ProductsModule, AuthModule, CategoriesModule, OrdersModule, FilesModule,
-    JwtModule.register( configJwt ),
+    JwtModule.register( configJwt ), // jwt.config
+    SeedModule, //sed module
+    ConsultsModule, // consult module AI
   ],
   controllers: [],
   providers: [DataLoaderService], // preload data DataLoaderService

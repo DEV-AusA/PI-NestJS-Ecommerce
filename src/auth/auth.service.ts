@@ -2,10 +2,9 @@ import { BadRequestException, Injectable, NotFoundException, UnauthorizedExcepti
 import { LoginDataDto } from './dto/auth.login.dto';
 import { AuthRepository } from './auth.repository';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/users/entities/user.entity';
+import { User } from '../users/entities/user.entity';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from 'src/users/dto/create.user.dto';
-import { UsersRepository } from 'src/users/users.repository';
+import { CreateUserDto } from '../users/dto/create.user.dto';
 import * as bcrypt from "bcrypt";
 import { JwtService } from "@nestjs/jwt";
 
@@ -15,7 +14,6 @@ export class AuthService {
   constructor(
     private readonly authRepository: AuthRepository,
     @InjectRepository(User)
-    // private readonly userRespository: UsersRepository,
     private readonly userRepository: Repository<User>,
     private jwtService: JwtService, 
   ){}
@@ -23,7 +21,6 @@ export class AuthService {
   async signUp(createUserDto: CreateUserDto) {
 
     const emailUser = await this.userRepository.findOneBy( { email: createUserDto.email} );
-    // const emailUser = await this.userRespository.findOneBy({ email: createUserDto.password });
     if(emailUser) throw new BadRequestException(`Ya existe un usuario registrado con ese email.`);
 
     const registerOk = await this.authRepository.signUp(createUserDto);
@@ -33,6 +30,7 @@ export class AuthService {
   async signIn(loginDataDto: LoginDataDto) {
     // valido el user
     const user = await this.userRepository.findOneBy({ email: loginDataDto.email });
+
     if(!user) throw new UnauthorizedException(`Email o password incorrectos, verifique los datos e intentelo nuevamente.`);
     // valido el password
     const passwordValid = await bcrypt.compare(loginDataDto.password, user.password);

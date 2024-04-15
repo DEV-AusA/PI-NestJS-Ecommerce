@@ -16,11 +16,10 @@ export class AuthGuard implements CanActivate {
   ): boolean | Promise<boolean> | Observable<boolean> {
     // obtengo request del context
     const request = context.switchToHttp().getRequest();
-    // valido si hay token
     const isToken = request.headers['authorization'];
     if(!isToken) throw new UnauthorizedException('Necesitas loguearte para acceder a esta seccion.');
     
-    // tomo el valor despues de 'Bearer'
+    // tomo el valor despues de 'Bearer '
     const token = request.headers['authorization'].split(' ')[1] ?? '';
 
     try {

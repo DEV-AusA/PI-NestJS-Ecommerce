@@ -1,8 +1,8 @@
 import { Controller, Post, Param, ParseUUIDPipe, UseInterceptors, UploadedFile, UploadedFiles, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator, BadRequestException, UseGuards } from '@nestjs/common';
 import { FilesService } from './files.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { fileFilter } from 'src/helpers/file.filter.helper';
-import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { fileFilter } from '../helpers/file.filter.helper';
+import { AuthGuard } from '../auth/guards/auth.guard';
 
 @Controller('files')
 export class FilesController {

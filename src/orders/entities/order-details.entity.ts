@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 import { Orders } from "./orders.entity";
-import { Products } from "src/products/entities/products.entity";
+import { Products } from "../../products/entities/products.entity";
 
 @Entity({
     name: "order_details"   //* <= este  sera el nombre en la tabla de nuestra DB, se usa en plural para evitar conoflicto de nombres

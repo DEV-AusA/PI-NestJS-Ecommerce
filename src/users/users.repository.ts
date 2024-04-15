@@ -16,7 +16,7 @@ export class UsersRepository {
   constructor(
     @InjectRepository(User) // inyecto la entity
     private readonly userRepository: Repository<User>, // el reporitory de typeorm manejara la entity User
-    private readonly dataSource: DataSource, // transactions
+    // private readonly dataSource: DataSource, // transactions
   ) {}
 
   async getUsers() {
@@ -53,40 +53,12 @@ export class UsersRepository {
     try {
       const user = this.userRepository.create(createUserDto);
       await this.userRepository.save(user);
-      return { message: `Usuario con el id ${user.id} creado correctamente.`};
+      return user;
+      // return { message: `Usuario con el id ${user.id} creado correctamente.`}; //TEST DE NEW USER
 
     } catch (error) {    
       this.handleDBExceptions(error);
     }
-
-    // // query para transactions
-    // const queryRunner: QueryRunner = this.dataSource.createQueryRunner();
-    // //conecto con la db
-    // await queryRunner.connect();
-    // // star transactions
-    // await queryRunner.startTransaction();
-    
-    // // creo new user completo        
-    // const newUser = queryRunner.manager.create(User, createUserDto);
-
-    // try {
-    //   //verifico si existe el usuario
-    //   // await queryRunner.manager.findOne(User, { where: { email: createUserDto.email } });
-    //   await queryRunner.manager.save(newUser);
-
-    //   await queryRunner.commitTransaction();
-    // } catch (error) {
-
-    //   await queryRunner.rollbackTransaction();
-
-    // }
-    // finally{
-    //   await queryRunner.release()
-    // }
-    
-    // // // save newUser
-    // const messageNewUser = { message: `Usuario con el id ${newUser.id} creado correctamente.`};
-    // return messageNewUser;
   }
 
   async updateUser(id: string, updateUserDto: UpdateUserDto) {
@@ -111,7 +83,16 @@ export class UsersRepository {
 
   async deleteUser(id: string) {
     const userFinded = await this.getUserById(id);
-    await this.userRepository.delete(userFinded.id)
+
+    if(!userFinded) throw new NotFoundException(`El usuario con id (${id}) no existe.`);
+
+    // Eliminar las relaciones de la tabla de pedidos (orders) relacionadas con el usuario
+    await this.userRepository.createQueryBuilder()
+      .relation(User, 'orders')
+      .of(userFinded)
+      .delete();
+
+    await this.userRepository.delete(userFinded.id);
     return { message: `Usuario con id ${id} eliminado correctamente.`};
   }
 
@@ -119,12 +100,10 @@ export class UsersRepository {
   private handleDBExceptions(error: any) { // any para recibir cualquier tipo de error
     //errores de la DB
     if (error.code === '23505' ) {
-      // console.log(error.code);
       throw new BadRequestException(error.detail);
     }
 
     this.logger.error(error);
-    // console.log(error);
     throw new InternalServerErrorException(`Error inesperado verifique los losgs del Server`)
   }
 

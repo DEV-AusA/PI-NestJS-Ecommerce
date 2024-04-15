@@ -4,8 +4,8 @@ import { OrdersController } from './orders.controller';
 import { OrdersRepository } from './orders.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Orders } from './entities/orders.entity';
-import { User } from 'src/users/entities/user.entity';
-import { Products } from 'src/products/entities/products.entity';
+import { User } from '../users/entities/user.entity';
+import { Products } from '../products/entities/products.entity';
 import { OrderDetails } from './entities/order-details.entity';
 
 @Module({

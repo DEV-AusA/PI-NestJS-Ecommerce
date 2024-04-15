@@ -5,8 +5,6 @@ import { LoginDataDto } from "src/auth/dto/auth.login.dto";
 export class MatchPassword implements ValidatorConstraintInterface {
 
   validate(value: string, args: ValidationArguments) {
-
-    console.log(args);   
     
     const dto = args.object as LoginDataDto;    
     

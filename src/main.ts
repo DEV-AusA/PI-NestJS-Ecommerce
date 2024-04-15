@@ -4,7 +4,7 @@ import { loggerGlobal } from './middlewares/logger.middleware';
 import { ValidationPipe } from '@nestjs/common';
 import { DataLoaderService } from './helpers/preload.data.helper';
 import { auth } from 'express-openid-connect';
-import { config as configAuth0 } from 'config/auth0';
+import { config as configAuth0 } from '../config/auth0';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

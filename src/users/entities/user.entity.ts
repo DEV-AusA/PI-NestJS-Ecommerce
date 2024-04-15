@@ -1,4 +1,4 @@
-import { Orders } from "src/orders/entities/orders.entity";
+import { Orders } from "../../orders/entities/orders.entity";
 import { Column, Entity, JoinColumn, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({
@@ -30,13 +30,13 @@ export class User {
     @Column({ type: 'varchar', length: 50 })
     city?: string;
 
-    @Column({ default: true, nullable: false })
+    @Column({ type: 'bool' ,default: true, nullable: false, select: false})
     active: boolean;
   
     @Column()
     last_login: Date;
 
-    @Column({ type: 'timestamp' }) // Esto podria ser 'date'(fecha)
+    @Column({ type: 'timestamp', select: false }) // Esto podria ser 'date'(fecha)
     created_at: Date;
 
     @OneToMany(

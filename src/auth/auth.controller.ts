@@ -1,9 +1,9 @@
-import { Body, Controller, Get, Headers, Post, Req, UnauthorizedException, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Headers, HttpCode, Post, Req, UnauthorizedException, UseInterceptors } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDataDto } from './dto/auth.login.dto';
-import { CreateUserDto } from 'src/users/dto/create.user.dto';
-import { DateAdderInterceptor } from 'src/interceptors/dateAdder.interceptor';
-import { FilterPasswordInterceptor } from 'src/interceptors/filterPassword.interceptor';
+import { CreateUserDto } from '../users/dto/create.user.dto';
+import { DateAdderInterceptor } from '../interceptors/dateAdder.interceptor';
+import { FilterPasswordInterceptor } from '../interceptors/filterPassword.interceptor';
 
 @Controller('auth')
 export class AuthController {
@@ -18,6 +18,7 @@ export class AuthController {
     return registerOk;    
   }
 
+  @HttpCode(200)
   @Post('signin')
   signIn(@Body() loginDataDto: LoginDataDto) {
 

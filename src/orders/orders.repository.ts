@@ -4,9 +4,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Orders } from './entities/orders.entity';
 import { DataSource, Repository } from 'typeorm';
 import { validate as isUUID } from "uuid";
-import { User } from 'src/users/entities/user.entity';
+import { User } from '../users/entities/user.entity';
 import { OrderDetails } from './entities/order-details.entity';
-import { Products } from 'src/products/entities/products.entity';
+import { Products } from '../products/entities/products.entity';
 
 @Injectable()
 export class OrdersRepository {
@@ -31,10 +31,7 @@ export class OrdersRepository {
       where: { id }
     });
     if(!order) throw new NotFoundException(`La order con id ${id} no existe.`);
-
-    const { user_id  } = order;
-    console.log(user_id);
-    
+        
     return order;
   }
   
@@ -83,7 +80,6 @@ export class OrdersRepository {
         const productIds = products.map((product) => product.id); // extraigo ids
         if(availableProducts.length !== productIds.length)
           throw new BadRequestException(`Algunos articulos estan fuera de stock.`)
-        // console.log(availableProducts);
 
         let totalPriceProducts = 0;
         for(const element of availableProducts) {
@@ -108,30 +104,19 @@ export class OrdersRepository {
 
         await queryRunner.commitTransaction()
 
-        const lastOrderDetails = this.ordersDetailsRepository.findOneBy({ id: newOrderDetailsSaved.id})
+        const lastOrderDetails = this.ordersDetailsRepository.findOneBy({ id: newOrderDetailsSaved.id});
         return lastOrderDetails
+
+        // const lastOrder = this.ordersRepository.findOneBy({ id: savedOrder.id })
+        // return lastOrder;
       }        
     }
     catch (error) {
         await queryRunner.rollbackTransaction();
         throw error
-        // this.handleDBExceptions(error)
     }
     finally {
       await queryRunner.release()
     }
-  }
-
-    // handle de errores Products friendly
-  private handleDBExceptions(error: any) { // any para recibir cualquier tipo de error
-    //errores de la DB
-    if (error.code === '23505' ) {
-      // console.log(error.code);
-      throw new BadRequestException(error.detail);
-    }
-
-    this.logger.error(error);
-    // console.log(error);
-    throw new InternalServerErrorException(`Error inesperado verifique los logs del Server`)
   }
 }

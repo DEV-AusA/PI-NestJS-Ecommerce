@@ -1,86 +1,450 @@
 [
   {
-    "name": "Iphone 15",
-    "description": "The best smartphone in the world",
+    "name": "Sony WH-CH710N",
+    "description": "Los auriculares Sony WH-CH710N son ideales para disfrutar de un sonido claro y potente en cualquier lugar. Cuentan con cancelación de ruido activa, batería de larga duración y comodidad durante todo el día.",
+    "price": 149.99,
+    "stock": 20,
+    "category": "audio",
+    "imgUrl": "https://cdn.example.com/img/sony-wh-ch710n.jpg"
+  },
+  {
+    "name": "ASUS ROG Strix Scar 17",
+    "description": "El ASUS ROG Strix Scar 17 es una laptop para juegos de alta gama con procesador Intel Core i9 de décima generación, tarjeta gráfica NVIDIA GeForce RTX 3080, hasta 64GB de RAM, y pantalla de 17.3 pulgadas con tasa de refresco de 360Hz.",
+    "price": 2999.99,
+    "stock": 8,
+    "category": "laptop",
+    "imgUrl": "https://cdn.example.com/img/asus-rog-strix-scar-17.jpg"
+  },
+  {
+    "name": "Samsung Galaxy Buds Pro",
+    "description": "Los Samsung Galaxy Buds Pro son auriculares inalámbricos con cancelación de ruido activa, calidad de sonido premium, resistencia al agua IPX7 y una duración de batería de hasta 18 horas con estuche de carga.",
     "price": 199.99,
-    "stock": 12,
-    "category": "smartphone"
+    "stock": 25,
+    "category": "audio",
+    "imgUrl": "https://cdn.example.com/img/samsung-galaxy-buds-pro.jpg"
   },
   {
-    "name": "Samsung Galaxy S23",
-    "description": "The best smartphone in the world",
-    "price": 150.0,
-    "stock": 12,
-    "category": "smartphone"
+    "name": "Acer Predator XB273K",
+    "description": "El Acer Predator XB273K es un monitor gaming de 27 pulgadas con resolución 4K, tasa de refresco de 144Hz, tecnología G-Sync, HDR400 y una amplia cobertura de colores para una experiencia visual impresionante.",
+    "price": 899.99,
+    "stock": 10,
+    "category": "monitor",
+    "imgUrl": "https://cdn.example.com/img/acer-predator-xb273k.jpg"
   },
   {
-    "name": "Motorola Edge 40",
-    "description": "The best smartphone in the world",
-    "price": 179.89,
+    "name": "Fitbit Versa 3",
+    "description": "El Fitbit Versa 3 es un smartwatch con GPS integrado, monitorización continua del ritmo cardíaco, seguimiento de la actividad física, medición del sueño, y más de 20 modos de ejercicio para ayudarte a mantenerte activo y saludable.",
+    "price": 229.99,
+    "stock": 15,
+    "category": "smartwatch",
+    "imgUrl": "https://cdn.example.com/img/fitbit-versa-3.jpg"
+  },
+  {
+    "name": "Anker PowerCore Essential 20000",
+    "description": "El Anker PowerCore Essential 20000 es una batería externa de alta capacidad que te permite cargar tus dispositivos móviles sobre la marcha. Cuenta con dos puertos USB para cargar múltiples dispositivos simultáneamente.",
+    "price": 49.99,
+    "stock": 30,
+    "category": "accessory",
+    "imgUrl": "https://cdn.example.com/img/anker-powercore-20000.jpg"
+  },
+  {
+    "name": "Lenovo Legion Y27q-20",
+    "description": "El Lenovo Legion Y27q-20 es un monitor gaming de 27 pulgadas con resolución QHD, tasa de refresco de 165Hz, tecnología G-Sync Compatible, y tiempo de respuesta de 1ms para una experiencia de juego fluida y sin desenfoques.",
+    "price": 449.99,
+    "stock": 10,
+    "category": "monitor",
+    "imgUrl": "https://cdn.example.com/img/lenovo-legion-y27q-20.jpg"
+  },
+  {
+    "name": "OnePlus 9 Pro",
+    "description": "El OnePlus 9 Pro es un smartphone de alta gama con pantalla Fluid AMOLED de 6.7 pulgadas, procesador Snapdragon 888, hasta 12GB de RAM, hasta 256GB de almacenamiento, y una cámara cuádruple Leica con capacidad de grabación de video en 8K.",
+    "price": 969.99,
+    "stock": 20,
+    "category": "smartphone",
+    "imgUrl": "https://cdn.example.com/img/oneplus-9-pro.jpg"
+  },
+  {
+    "name": "Bose QuietComfort 45",
+    "description": "Los auriculares Bose QuietComfort 45 ofrecen una cancelación de ruido excepcional, calidad de sonido premium, comodidad durante todo el día y una duración de batería de hasta 24 horas con una sola carga.",
+    "price": 329.99,
+    "stock": 15,
+    "category": "audio",
+    "imgUrl": "https://cdn.example.com/img/bose-quietcomfort-45.jpg"
+  },
+  {
+    "name": "TP-Link Deco X60",
+    "description": "El TP-Link Deco X60 es un sistema Wi-Fi 6 de malla que ofrece una cobertura inalámbrica de alta velocidad y una conexión estable en todo tu hogar. Viene con tres unidades que se conectan para formar una red sin interrupciones.",
+    "price": 349.99,
+    "stock": 8,
+    "category": "networking",
+    "imgUrl": "https://cdn.example.com/img/tp-link-deco-x60.jpg"
+  },
+  {
+    "name": "Xbox Series X",
+    "description": "La Xbox Series X es la consola de próxima generación de Microsoft que ofrece gráficos de alta fidelidad, tiempos de carga rápidos, compatibilidad con juegos de versiones anteriores y una amplia variedad de servicios de entretenimiento.",
+    "price": 499.99,
+    "stock": 15,
+    "category": "gaming",
+    "imgUrl": "https://cdn.example.com/img/xbox-series-x.jpg"
+  },
+  {
+    "name": "Samsung Galaxy S21 Ultra",
+    "description": "El Samsung Galaxy S21 Ultra es un smartphone de gama alta con una pantalla Dynamic AMOLED de 6.8 pulgadas, procesador Exynos 2100 o Snapdragon 888, hasta 16GB de RAM, hasta 512GB de almacenamiento, y una cámara cuádruple versátil con zoom óptico de 100x.",
+    "price": 1199.99,
+    "stock": 20,
+    "category": "smartphone",
+    "imgUrl": "https://cdn.example.com/img/samsung-galaxy-s21-ultra.jpg"
+  },
+  {
+    "name": "Sony A7 III",
+    "description": "La Sony A7 III es una cámara mirrorless de fotograma completo con un sensor de 24.2MP, estabilización de imagen de 5 ejes, grabación de video 4K, y un sistema AF avanzado con detección de ojos en tiempo real para un enfoque preciso.",
+    "price": 1999.99,
+    "stock": 10,
+    "category": "camera",
+    "imgUrl": "https://cdn.example.com/img/sony-a7-iii.jpg"
+  },
+  {
+    "name": "Apple iPad Air (4ta generación)",
+    "description": "El Apple iPad Air es una tablet potente con pantalla Liquid Retina de 10.9 pulgadas, chip A14 Bionic, soporte para Apple Pencil de 2da generación y Magic Keyboard, y hasta 256GB de almacenamiento.",
+    "price": 599.99,
+    "stock": 25,
+    "category": "tablet",
+    "imgUrl": "https://cdn.example.com/img/apple-ipad-air.jpg"
+  },
+  {
+    "name": "Logitech G Pro X",
+    "description": "El Logitech G Pro X es un teclado mecánico para juegos diseñado para ofrecer una respuesta táctil precisa y una experiencia de juego inmersiva. Cuenta con teclas intercambiables, iluminación RGB personalizable y teclas programables.",
+    "price": 149.99,
+    "stock": 20,
+    "category": "peripherals",
+    "imgUrl": "https://cdn.example.com/img/logitech-g-pro-x.jpg"
+  },
+  {
+    "name": "DJI Mavic Air 2",
+    "description": "El DJI Mavic Air 2 es un dron compacto y potente con una cámara de 48MP capaz de grabar video en 4K a 60 fps, autonomía de vuelo de hasta 34 minutos, sensores de evitación de obstáculos y modos de vuelo inteligentes.",
+    "price": 799.99,
+    "stock": 15,
+    "category": "drone",
+    "imgUrl": "https://cdn.example.com/img/dji-mavic-air-2.jpg"
+  },
+  {
+    "name": "Amazon Kindle Oasis",
+    "description": "El Amazon Kindle Oasis es un lector de libros electrónicos con una pantalla Paperwhite de 7 pulgadas, resistencia al agua, iluminación ajustable, y una batería que dura semanas con una sola carga.",
+    "price": 279.99,
+    "stock": 18,
+    "category": "e-reader",
+    "imgUrl": "https://cdn.example.com/img/amazon-kindle-oasis.jpg"
+  },
+  {
+    "name": "Corsair HS70 Pro",
+    "description": "El Corsair HS70 Pro es un auricular inalámbrico para juegos con sonido envolvente 7.1, micrófono desmontable con cancelación de ruido, y una duración de batería de hasta 16 horas para sesiones de juego prolongadas.",
+    "price": 99.99,
+    "stock": 30,
+    "category": "audio",
+    "imgUrl": "https://cdn.example.com/img/corsair-hs70-pro.jpg"
+  },
+  {
+    "name": "Google Nest Hub (2da generación)",
+    "description": "El Google Nest Hub es una pantalla inteligente con Asistente de Google integrado que te permite controlar dispositivos domésticos inteligentes, reproducir música, ver videos, mostrar fotos y obtener información útil con comandos de voz.",
+    "price": 99.99,
+    "stock": 25,
+    "category": "smart-home",
+    "imgUrl": "https://cdn.example.com/img/google-nest-hub.jpg"
+  },
+  {
+    "name": "Microsoft Xbox Elite Wireless Controller Series 2",
+    "description": "El Microsoft Xbox Elite Wireless Controller Series 2 es un controlador de alto rendimiento diseñado para jugadores profesionales y entusiastas. Cuenta con palancas intercambiables, gatillos de bloqueo de alta precisión y ajustes personalizables.",
+    "price": 179.99,
     "stock": 12,
-    "category": "smartphone"
+    "category": "gaming",
+    "imgUrl": "https://cdn.example.com/img/microsoft-xbox-elite-controller.jpg"
+  },
+  {
+    "name": "Sony PlayStation VR",
+    "description": "El Sony PlayStation VR es un sistema de realidad virtual diseñado para la consola PlayStation 4. Ofrece una experiencia de juego inmersiva con seguimiento preciso, gráficos realistas y una amplia biblioteca de juegos compatibles.",
+    "price": 299.99,
+    "stock": 15,
+    "category": "gaming",
+    "imgUrl": "https://cdn.example.com/img/sony-playstation-vr.jpg"
+  },
+  {
+    "name": "Microsoft Surface Laptop 4",
+    "description": "El Microsoft Surface Laptop 4 es una laptop elegante y potente con pantalla táctil PixelSense de alta resolución, procesadores Intel Core o AMD Ryzen, hasta 32GB de RAM, y hasta 1TB de almacenamiento SSD.",
+    "price": 1299.99,
+    "stock": 10,
+    "category": "laptop",
+    "imgUrl": "https://cdn.example.com/img/microsoft-surface-laptop-4.jpg"
+  },
+  {
+    "name": "Razer DeathAdder V2",
+    "description": "El Razer DeathAdder V2 es un mouse para juegos con un sensor óptico de 20,000 DPI, switches ópticos de Razer con durabilidad extendida, y un diseño ergonómico para un agarre cómodo durante largas sesiones de juego.",
+    "price": 69.99,
+    "stock": 20,
+    "category": "peripherals",
+    "imgUrl": "https://cdn.example.com/img/razer-deathadder-v2.jpg"
+  },
+  {
+    "name": "Amazon Fire TV Stick 4K",
+    "description": "El Amazon Fire TV Stick 4K es un dispositivo de transmisión de medios que te permite acceder a una amplia variedad de servicios de streaming en tu televisor, incluidos Amazon Prime Video, Netflix, Disney+, y más, en calidad 4K.",
+    "price": 49.99,
+    "stock": 30,
+    "category": "smart-home",
+    "imgUrl": "https://cdn.example.com/img/amazon-fire-tv-stick-4k.jpg"
+  },
+  {
+    "name": "JBL Charge 5",
+    "description": "El JBL Charge 5 es un altavoz Bluetooth portátil con un sonido potente y graves profundos. También funciona como un banco de energía con una batería de larga duración que puede cargar tus dispositivos móviles.",
+    "price": 179.99,
+    "stock": 25,
+    "category": "audio",
+    "imgUrl": "https://cdn.example.com/img/jbl-charge-5.jpg"
+  },
+  {
+    "name": "Samsung Odyssey G7",
+    "description": "El Samsung Odyssey G7 es un monitor curvo de 27 pulgadas con resolución QHD, tasa de refresco de 240Hz, tecnología QLED, y compatibilidad con G-Sync y FreeSync para una experiencia de juego suave y sin desgarros.",
+    "price": 699.99,
+    "stock": 15,
+    "category": "monitor",
+    "imgUrl": "https://cdn.example.com/img/samsung-odyssey-g7.jpg"
+  },
+  {
+    "name": "Apple Watch Series 7",
+    "description": "El Apple Watch Series 7 es un smartwatch con pantalla Retina siempre encendida, seguimiento avanzado de la salud, detección de caídas, resistencia al agua, y una amplia variedad de aplicaciones disponibles en el App Store.",
+    "price": 399.99,
+    "stock": 20,
+    "category": "smartwatch",
+    "imgUrl": "https://cdn.example.com/img/apple-watch-series-7.jpg"
+  },
+  {
+    "name": "Logitech C920 HD Pro",
+    "description": "La cámara web Logitech C920 HD Pro ofrece video Full HD 1080p a 30 fps con corrección automática de luz y enfoque, lo que la hace ideal para videollamadas y streaming en plataformas como Zoom, Skype y Twitch.",
+    "price": 79.99,
+    "stock": 25,
+    "category": "peripherals",
+    "imgUrl": "https://cdn.example.com/img/logitech-c920-hd-pro.jpg"
+  },
+  {
+    "name": "DJI Osmo Pocket 2",
+    "description": "El DJI Osmo Pocket 2 es una cámara de bolsillo con estabilización de imagen de tres ejes, grabación de video en 4K, pantalla táctil integrada, y una variedad de funciones inteligentes para capturar momentos increíbles.",
+    "price": 349.99,
+    "stock": 10,
+    "category": "camera",
+    "imgUrl": "https://cdn.example.com/img/dji-osmo-pocket-2.jpg"
+  },
+  {
+    "name": "Anker Soundcore Liberty Air 2 Pro",
+    "description": "Los auriculares Anker Soundcore Liberty Air 2 Pro ofrecen cancelación de ruido activa personalizable, sonido premium con drivers de 11mm, resistencia al agua IPX4, y hasta 26 horas de reproducción con el estuche de carga.",
+    "price": 129.99,
+    "stock": 15,
+    "category": "audio",
+    "imgUrl": "https://cdn.example.com/img/anker-soundcore-liberty-air-2-pro.jpg"
+  },
+  {
+    "name": "GoPro HERO9 Black",
+    "description": "La GoPro HERO9 Black es una cámara de acción con grabación de video en 5K, fotos de 20MP, pantalla frontal para selfies, estabilización HyperSmooth 3.0, y resistencia al agua hasta 10 metros sin carcasa.",
+    "price": 449.99,
+    "stock": 8,
+    "category": "camera",
+    "imgUrl": "https://cdn.example.com/img/gopro-hero9-black.jpg"
+  },
+  {
+    "name": "Amazon Echo Dot (4ta generación)",
+    "description": "El Amazon Echo Dot es un altavoz inteligente con Alexa que se controla por voz y se conecta a los servicios de música y otros dispositivos inteligentes en el hogar. Tiene un diseño compacto y elegante.",
+    "price": 49.99,
+    "stock": 30,
+    "category": "smart-home",
+    "imgUrl": "https://cdn.example.com/img/amazon-echo-dot.jpg"
+  },
+  {
+    "name": "Microsoft Surface Pro 7",
+    "description": "La Microsoft Surface Pro 7 es una tablet que también funciona como laptop con un diseño versátil. Cuenta con pantalla táctil de 12.3 pulgadas, procesadores Intel Core de 10ª generación, hasta 16GB de RAM y hasta 1TB de almacenamiento SSD.",
+    "price": 799.99,
+    "stock": 12,
+    "category": "tablet",
+    "imgUrl": "https://cdn.example.com/img/microsoft-surface-pro-7.jpg"
+  },
+  {
+    "name": "Sony PlayStation 5",
+    "description": "La Sony PlayStation 5 es la última consola de videojuegos de Sony con una potencia de procesamiento increíble, gráficos realistas, almacenamiento SSD ultra rápido y una experiencia de juego envolvente.",
+    "price": 499.99,
+    "stock": 15,
+    "category": "gaming",
+    "imgUrl": "https://cdn.example.com/img/sony-playstation-5.jpg"
+  },
+  {
+    "name": "LG CX OLED TV",
+    "description": "La LG CX OLED TV es una televisión premium con tecnología OLED que ofrece negros perfectos, colores vibrantes, ángulos de visión amplios y una experiencia de visualización cinematográfica. Viene con funciones inteligentes y compatibilidad con asistentes de voz.",
+    "price": 1999.99,
+    "stock": 10,
+    "category": "television",
+    "imgUrl": "https://cdn.example.com/img/lg-cx-oled-tv.jpg"
+  },
+  {
+    "name": "Logitech MX Master 3",
+    "description": "El Logitech MX Master 3 es un mouse inalámbrico de alta gama diseñado para profesionales creativos y usuarios avanzados. Cuenta con un diseño ergonómico, botones personalizables, y un sensor láser preciso.",
+    "price": 99.99,
+    "stock": 25,
+    "category": "peripherals",
+    "imgUrl": "https://cdn.example.com/img/logitech-mx-master-3.jpg"
+  },
+  {
+    "name": "Apple AirPods Pro",
+    "description": "Los Apple AirPods Pro son auriculares inalámbricos con cancelación de ruido activa, modo de sonido ambiente, resistencia al agua y al sudor, y una calidad de audio superior. Son compatibles con dispositivos Apple.",
+    "price": 249.99,
+    "stock": 20,
+    "category": "audio",
+    "imgUrl": "https://cdn.example.com/img/apple-airpods-pro.jpg"
+  },
+  {
+    "name": "Raspberry Pi 4",
+    "description": "El Raspberry Pi 4 es una computadora de placa única (SBC) de bajo costo que se utiliza para proyectos de computación DIY, desarrollo de software, educación en informática y mucho más. Cuenta con puertos USB, HDMI, Ethernet y GPIO.",
+    "price": 35.00,
+    "stock": 50,
+    "category": "mini-computer",
+    "imgUrl": "https://cdn.example.com/img/raspberry-pi-4.jpg"
+  },
+  {
+    "name": "Canon EOS R5",
+    "description": "La Canon EOS R5 es una cámara mirrorless de fotograma completo con resolución de 45MP, capacidad de grabación de video en 8K, estabilización de imagen de 5 ejes, y un sistema AF avanzado para un enfoque rápido y preciso.",
+    "price": 3899.99,
+    "stock": 7,
+    "category": "camera",
+    "imgUrl": "https://cdn.example.com/img/canon-eos-r5.jpg"
+  },    
+  {
+    "name": "GoPro HERO10 Black",
+    "description": "La GoPro HERO10 Black es una cámara de acción con grabación de video en 5.3K, fotos de 23MP, pantalla táctil, estabilización HyperSmooth 4.0, y resistencia al agua hasta 10 metros sin carcasa.",
+    "price": 549.99,
+    "stock": 10,
+    "category": "camera",
+    "imgUrl": "https://cdn.example.com/img/gopro-hero10-black.jpg"
+  },
+  {
+    "name": "Xiaomi Mi Band 6",
+    "description": "La Xiaomi Mi Band 6 es una pulsera de actividad con pantalla AMOLED a color de 1.56 pulgadas, monitorización del ritmo cardíaco, seguimiento del sueño, resistencia al agua y hasta 14 días de duración de la batería.",
+    "price": 49.99,
+    "stock": 30,
+    "category": "wearable",
+    "imgUrl": "https://cdn.example.com/img/xiaomi-mi-band-6.jpg"
+  },
+  {
+    "name": "Dell XPS 15",
+    "description": "La Dell XPS 15 es una laptop premium con una pantalla InfinityEdge de 15.6 pulgadas, procesadores Intel Core de 11ª generación, hasta 64GB de RAM, hasta 4TB de almacenamiento SSD y una GPU dedicada NVIDIA GeForce GTX.",
+    "price": 1899.99,
+    "stock": 15,
+    "category": "laptop",
+    "imgUrl": "https://cdn.example.com/img/dell-xps-15.jpg"
+  },
+  {
+    "name": "LG OLED C1",
+    "description": "El LG OLED C1 es un televisor OLED de alta gama con resolución 4K, tasa de refresco de 120Hz, Dolby Vision IQ, Dolby Atmos, compatibilidad con NVIDIA G-Sync y AMD FreeSync, y un diseño ultra delgado.",
+    "price": 2499.99,
+    "stock": 8,
+    "category": "television",
+    "imgUrl": "https://cdn.example.com/img/lg-oled-c1.jpg"
+  },
+  {
+    "name": "Razer Naga X",
+    "description": "El Razer Naga X es un ratón para juegos diseñado para MMO con 16 botones programables, sensor óptico de 16,000 DPI, iluminación RGB Chroma y un diseño ergonómico para un control preciso durante largas sesiones de juego.",
+    "price": 79.99,
+    "stock": 20,
+    "category": "peripherals",
+    "imgUrl": "https://cdn.example.com/img/razer-naga-x.jpg"
+  },
+  {
+    "name": "Nintendo Switch OLED",
+    "description": "La Nintendo Switch OLED es una consola híbrida con una pantalla OLED de 7 pulgadas, mejoras en el audio, base ajustable, y compatibilidad con todos los juegos y accesorios de la Nintendo Switch original.",
+    "price": 349.99,
+    "stock": 25,
+    "category": "gaming",
+    "imgUrl": "https://cdn.example.com/img/nintendo-switch-oled.jpg"
+  },
+  {
+    "name": "Sony WF-1000XM4",
+    "description": "Los auriculares Sony WF-1000XM4 son auriculares inalámbricos con cancelación de ruido líder en su clase, sonido de alta resolución, resistencia al agua IPX4 y hasta 24 horas de duración de la batería con el estuche de carga.",
+    "price": 279.99,
+    "stock": 20,
+    "category": "audio",
+    "imgUrl": "https://cdn.example.com/img/sony-wf-1000xm4.jpg"
+  },
+  {
+    "name": "Corsair Virtuoso RGB Wireless XT",
+    "description": "Los auriculares Corsair Virtuoso RGB Wireless XT son auriculares de alta fidelidad con sonido envolvente 7.1, micrófono omnidireccional desmontable, conexión inalámbrica de baja latencia y una construcción de aluminio premium.",
+    "price": 259.99,
+    "stock": 15,
+    "category": "audio",
+    "imgUrl": "https://cdn.example.com/img/corsair-virtuoso-rgb-wireless-xt.jpg"
+  },
+  {
+    "name": "Apple AirTag",
+    "description": "El Apple AirTag es un pequeño dispositivo de seguimiento que te permite encontrar tus objetos perdidos utilizando la red de dispositivos Apple. Se integra con la aplicación Find My para localizar tus pertenencias con precisión.",
+    "price": 29.99,
+    "stock": 50,
+    "category": "accessory",
+    "imgUrl": "https://cdn.example.com/img/apple-airtag.jpg"
+  },
+  {
+    "name": "Logitech G733 Lightspeed",
+    "description": "Los auriculares Logitech G733 Lightspeed son auriculares para juegos inalámbricos con iluminación RGB personalizable, tecnología de audio avanzada, micrófono desmontable y una duración de batería de hasta 29 horas.",
+    "price": 129.99,
+    "stock": 25,
+    "category": "audio",
+    "imgUrl": "https://cdn.example.com/img/logitech-g733-lightspeed.jpg"
   },
   {
     "name": "Samsung Odyssey G9",
-    "description": "The best monitor in the world",
-    "price": 299.99,
-    "stock": 12,
-    "category": "monitor"
+    "description": "El Samsung Odyssey G9 es un monitor gaming ultrapanorámico de 49 pulgadas con resolución QHD, tasa de refresco de 240Hz, tecnología QLED, y compatibilidad con G-Sync y FreeSync para una experiencia de juego inmersiva.",
+    "price": 1499.99,
+    "stock": 15,
+    "category": "monitor",
+    "imgUrl": "https://cdn.example.com/img/samsung-odyssey-g9.jpg"
   },
   {
-    "name": "LG UltraGear",
-    "description": "The best monitor in the world",
+    "name": "Apple MacBook Air (M1)",
+    "description": "El Apple MacBook Air con chip M1 es una laptop ultradelgada y ligera con una pantalla Retina de 13.3 pulgadas, hasta 16GB de RAM, hasta 2TB de almacenamiento SSD, y una duración de batería de hasta 18 horas.",
+    "price": 999.99,
+    "stock": 20,
+    "category": "laptop",
+    "imgUrl": "https://cdn.example.com/img/apple-macbook-air-m1.jpg"
+  },
+  {
+    "name": "Sony WH-1000XM4",
+    "description": "Los auriculares Sony WH-1000XM4 son auriculares inalámbricos con cancelación de ruido líder en su clase, sonido de alta resolución, autonomía de hasta 30 horas y una experiencia auditiva personalizable a través de la aplicación Sony Headphones Connect.",
+    "price": 349.99,
+    "stock": 25,
+    "category": "audio",
+    "imgUrl": "https://cdn.example.com/img/sony-wh-1000xm4.jpg"
+  },
+  {
+    "name": "Asus ROG Swift PG279Q",
+    "description": "El Asus ROG Swift PG279Q es un monitor gaming de 27 pulgadas con resolución WQHD, tasa de refresco de 165Hz, tecnología G-Sync, y tiempo de respuesta de 4ms para una experiencia de juego suave y sin desenfoques.",
+    "price": 699.99,
+    "stock": 12,
+    "category": "monitor",
+    "imgUrl": "https://cdn.example.com/img/asus-rog-swift-pg279q.jpg"
+  },
+  {
+    "name": "Corsair K95 RGB Platinum XT",
+    "description": "El Corsair K95 RGB Platinum XT es un teclado mecánico para juegos con switches Cherry MX, retroiluminación RGB personalizable, reposamuñecas desmontable, y teclas programables para una experiencia de juego personalizada.",
     "price": 199.99,
-    "stock": 12,
-    "category": "monitor"
+    "stock": 20,
+    "category": "peripherals",
+    "imgUrl": "https://cdn.example.com/img/corsair-k95-rgb-platinum-xt.jpg"
   },
   {
-    "name": "Acer Predator",
-    "description": "The best monitor in the world",
-    "price": 150.0,
-    "stock": 12,
-    "category": "monitor"
+    "name": "Sony Bravia A90J",
+    "description": "El Sony Bravia A90J es un televisor OLED de alta gama con resolución 4K, tecnología XR OLED, Dolby Vision, Dolby Atmos, y un procesador avanzado para imágenes y sonido de calidad cinematográfica.",
+    "price": 3499.99,
+    "stock": 8,
+    "category": "television",
+    "imgUrl": "https://cdn.example.com/img/sony-bravia-a90j.jpg"
   },
   {
-    "name": "Razer BlackWidow V3",
-    "description": "The best keyboard in the world",
-    "price": 99.99,
-    "stock": 12,
-    "category": "keyboard"
-  },
-  {
-    "name": "Corsair K70",
-    "description": "The best keyboard in the world",
-    "price": 79.99,
-    "stock": 12,
-    "category": "keyboard"
-  },
-  {
-    "name": "Logitech G Pro",
-    "description": "The best keyboard in the world",
-    "price": 59.99,
-    "stock": 12,
-    "category": "keyboard"
-  },
-  {
-    "name": "Razer Viper",
-    "description": "The best mouse in the world",
-    "price": 49.99,
-    "stock": 12,
-    "category": "mouse"
-  },
-  {
-    "name": "Logitech G502 Pro",
-    "description": "The best mouse in the world",
-    "price": 39.99,
-    "stock": 12,
-    "category": "mouse"
-  },
-  {
-    "name": "SteelSeries Rival 3",
-    "description": "The best mouse in the world",
-    "price": 29.99,
-    "stock": 12,
-    "category": "mouse"
+    "name": "Logitech StreamCam",
+    "description": "La Logitech StreamCam es una cámara web Full HD con enfoque automático, estabilización de imagen, y una variedad de opciones de montaje para adaptarse a tus necesidades de streaming y videollamadas.",
+    "price": 169.99,
+    "stock": 15,
+    "category": "peripherals",
+    "imgUrl": "https://cdn.example.com/img/logitech-streamcam.jpg"
   }
 ]

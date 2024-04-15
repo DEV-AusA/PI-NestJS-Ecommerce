@@ -6,13 +6,11 @@ import { PaginationProductDto } from './dto/pagination.product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Products } from './entities/products.entity';
 import { DataSource, QueryRunner, Repository } from 'typeorm';
-import { Categories } from 'src/categories/entities/category.entity';
-
+import { Categories } from '../categories/entities/category.entity';
 import { validate as isUUID } from "uuid";
 
 @Injectable()
 export class ProductsRepository {
-
   //propiedad para el handle de errores
   private readonly logger = new Logger('ProductsRepository');
 
@@ -27,15 +25,14 @@ export class ProductsRepository {
    async getProducts(paginationProductDto: PaginationProductDto) {
     // valores por defecto
     const { page = 1, limit = 5 } = paginationProductDto;
-    // console.log(typeof page, typeof limit);    
 
     // calculo el indice de inicio y fin
     const startIndex = (page - 1) * limit;
     const endIndex = startIndex + limit;
 
-    // Obtener los productos para la pagina actual
-    const products = await this.productsRepository.find()
+    const products = await this.productsRepository.find();
     const productosPaginados = products.slice(startIndex, endIndex);
+
     return {page , productosPaginados};    
     }
   
@@ -50,7 +47,7 @@ export class ProductsRepository {
     let product: Products;
     //check is UUID
     if (isUUID(id)) {
-      product = await this.productsRepository.findOneBy({ id });      
+      product = await this.productsRepository.findOneBy({ id });     
     }
     if (!product) throw new NotFoundException(`El producto con id ${id} no existe.`); // exception filter de NestJS
     return product;
@@ -58,7 +55,7 @@ export class ProductsRepository {
 
   async createProduct(productDto: ProductDto | ProductDto[]) {
 
-    let newProduct: Products
+    let newProduct: Products;
     // query para transactions
     const queryRunner: QueryRunner = this.dataSource.createQueryRunner();
     //conecto con la db
@@ -175,14 +172,11 @@ export class ProductsRepository {
       if (Array.isArray(category)) { //CORREGIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIR
         //borra las que existen en la DB
         await queryRunner.manager.delete(Categories, { products: { id } }) // uso id del preload
-
-        console.log(category);
         
         // mapeo las nuevas categories
         product.category = category.map((category) => this.categoriesRepository.create({ name: category}))        
       }
       else {
-        console.log(category);
 
         await queryRunner.manager.delete( Categories, { products: { id } });
         product.category = [ this.categoriesRepository.create({ name: category }) ] 
@@ -251,12 +245,10 @@ export class ProductsRepository {
   private handleDBExceptions(error: any) { // any para recibir cualquier tipo de error
     //errores de la DB
     if (error.code === '23505' ) {
-      // console.log(error.code);
       throw new BadRequestException(error.detail);
     }
 
     this.logger.error(error);
-    // console.log(error);
     throw new InternalServerErrorException(`Error inesperado verifique los losgs del Server`)
   }
 

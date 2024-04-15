@@ -1,13 +1,11 @@
 import { Body, Controller, Delete, Get, Headers, HttpCode, Param, ParseUUIDPipe, Post, Put, Query, Req, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create.user.dto';
 import { UpdateUserDto } from './dto/update.user.dto';
-import { FilterPasswordInterceptor } from 'src/interceptors/filterPassword.interceptor';
-import { DateAdderInterceptor } from 'src/interceptors/dateAdder.interceptor';
-import { AuthGuard } from 'src/auth/guards/auth.guard';
-import { Roles } from 'src/decorators/roles.decorator';
-import { Role } from 'src/roles.enum';
-import { RolesGuard } from 'src/guards/roles.guard';
+import { FilterPasswordInterceptor } from '../interceptors/filterPassword.interceptor';
+import { AuthGuard } from '../auth/guards/auth.guard';
+import { Roles } from '../decorators/roles.decorator';
+import { Role } from '../helpers/roles.enum';
+import { RolesGuard } from '../guards/roles.guard';
 
 @Controller('users') //     <= endPoint
 export class UsersController {
