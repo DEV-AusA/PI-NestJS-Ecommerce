@@ -1,0 +1,24 @@
+# version de docker
+version: '3.8'
+
+services: 
+  nestapp:
+    build: ./
+    container_name: ecommerce-docker
+    ports:
+      - "3000:3000"
+    env_file:
+      - .development.env
+    depends_on:
+      - postgresdb
+
+  postgresdb:
+    image: postgres
+    container_name: ecommerce-db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    env_file:
+      - .development.env
+ 
+volumes:
+  pgdata:
