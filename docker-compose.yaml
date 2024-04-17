@@ -3,7 +3,7 @@ version: '3.8'
 
 services: 
   nestapp:
-    build: ./
+    build: cesarausa/eccomerce-dev-ausa
     container_name: ecommerce-docker
     ports:
       - "3000:3000"

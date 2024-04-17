@@ -32,11 +32,20 @@ docker compose up
 
 ## Deploy
 
+Hacer commit de los cambios antes de crear el VAR-ENT en GitHub
+
 crear cuenta en GitHub
 Ir al proyecto
 Ir a Settings->Secrets and variables y crear VAR-ENT
     DOCKERHUB_TOKEN
     DOCKERHUB_USERNAME
 Ir a Actions y crear uno Custom
+
+Despues modifico la ruta del docker-compose.yaml para que acceda al build hecho por github en vez de hacerlo y leerlo de forma local de la imagen
+
+
+crear DB Postgresql en Render
+
+
 
 
