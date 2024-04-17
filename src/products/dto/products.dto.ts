@@ -1,14 +1,24 @@
-import { IsNotEmpty, IsNumber, IsPositive, IsString, IsUrl, Length } from 'class-validator';
+import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, IsUrl, Length, MinLength } from 'class-validator';
 
 export class ProductDto {
   @IsNotEmpty()
   @IsString()
-  @Length(3)
+  @MinLength(3)
   readonly name: string;
+
+  @IsNumber()
+  @IsArray()
+  @IsOptional()
+  readonly nameEmbedding?: number[];
 
   @IsNotEmpty()
   @IsString()
   readonly description: string;
+
+  @IsNumber()
+  @IsArray()
+  @IsOptional()
+  readonly descriptionEmbedding?: number[];
 
   @IsNotEmpty()
   @IsNumber()

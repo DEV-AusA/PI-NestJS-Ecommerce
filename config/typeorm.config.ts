@@ -6,12 +6,12 @@ dotenvConfig({ path: '.development.env' });
 
 const config = {
     type: "postgres",
-    host: process.env.DB_HOST,
+    host: "postgresdb",
     port: process.env.DB_PORT,
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    dropSchema: true,
+    // dropSchema: true,
     synchronize: true,
     // logging: true, // ["error"], <= solo muestre errores de la DB
     subscribers: [],

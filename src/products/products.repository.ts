@@ -1,6 +1,5 @@
 import { BadRequestException, Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
 import { ProductDto } from './dto/products.dto';
-import { IProduct } from './interfaces/product.interface';
 import { UpdateProductDto } from './dto/update.product.dto';
 import { PaginationProductDto } from './dto/pagination.product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -8,6 +7,9 @@ import { Products } from './entities/products.entity';
 import { DataSource, QueryRunner, Repository } from 'typeorm';
 import { Categories } from '../categories/entities/category.entity';
 import { validate as isUUID } from "uuid";
+import { GoogleGenerativeAI } from '@google/generative-ai';
+import {config as dotenvConfig} from 'dotenv'
+dotenvConfig({ path: '.development.env' });
 
 @Injectable()
 export class ProductsRepository {
@@ -45,9 +47,14 @@ export class ProductsRepository {
    async getProductById(id: string) {
 
     let product: Products;
-    //check is UUID
     if (isUUID(id)) {
-      product = await this.productsRepository.findOneBy({ id });     
+      
+      return this.productsRepository
+      .createQueryBuilder('product')
+      .select(['product.nameEmbedding'])
+      .where('product.id = :id', { id })
+      .getMany();
+      // product = await this.productsRepository.findOneBy({ id });     
     }
     if (!product) throw new NotFoundException(`El producto con id ${id} no existe.`); // exception filter de NestJS
     return product;
@@ -227,6 +234,75 @@ export class ProductsRepository {
     } catch (error) {
       this.handleDBExceptions(error)
       
+    }
+  }
+
+  async createProductEmbedding(productEmbedding: ProductDto | ProductDto[]) {
+
+    
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const modelEmbedding = genAI.getGenerativeModel({ model: "embedding-001"});
+    
+    try {
+      
+      if (Array.isArray(productEmbedding)) {        
+        const arrayNuevo = [];
+          
+        for(const product of productEmbedding) {
+  
+          const { name, description } = product;
+          const productFinded = await this.productsRepository.findOne({ where: {name}});
+          
+          if(!productFinded) throw new NotFoundException(`El producto "${name}" no existe en la base de datos.`);
+          // product embedding
+          const resultProductEmbedding = await modelEmbedding.embedContent(name);
+          const productEmbedding = await resultProductEmbedding.embedding.values;    
+          // suggestionUse embedding
+          const resultSuggestionsUseEmbedding = await modelEmbedding.embedContent(description);
+          const descriptionEmbedding = await resultSuggestionsUseEmbedding.embedding.values;
+    
+          productFinded.nameEmbedding = productEmbedding;
+          productFinded.descriptionEmbedding = descriptionEmbedding;
+    
+          const newProduct = await this.productsRepository.save(productFinded);
+
+          const {id, ...resto} = newProduct;
+          arrayNuevo.push(resto);
+        }
+        
+        return arrayNuevo;
+        // const message = { message: "Embeddings creados con exito"};
+        // return message;      
+      }
+      else {
+        const { name, description } = productEmbedding;
+    
+        const product = await this.productsRepository.findOne({ where: {name}});
+    
+        if(!product) throw new NotFoundException(`El producto "${name}" no existe en la base de datos.`);
+        // model embedding-001
+        // product embedding
+        const resultProductEmbedding = await modelEmbedding.embedContent(name);
+        const newProductEmbedding = await resultProductEmbedding.embedding.values;
+    
+        // suggestionUse embedding
+        const resultSuggestionsUseEmbedding = await modelEmbedding.embedContent(description);
+        const descriptionEmbedding = await resultSuggestionsUseEmbedding.embedding.values;
+    
+        product.nameEmbedding = newProductEmbedding;
+        product.descriptionEmbedding = descriptionEmbedding;
+    
+        const productsSaved = await this.productsRepository.save(product);
+
+        // arrayNuevo.push(product);
+  
+        return productsSaved;
+        // const message = { message: "Embeddings creados con exito"};  
+        // return message;
+      }
+    } catch (error) {
+
+      throw new BadRequestException(`Error al crear los Embeddings, ${error}`);      
     }
   }
 

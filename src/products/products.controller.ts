@@ -7,7 +7,6 @@ import { AuthGuard } from '../auth/guards/auth.guard';
 import { Roles } from '../decorators/roles.decorator';
 import { Role } from '../helpers/roles.enum';
 import { RolesGuard } from '../guards/roles.guard';
-import { ProductEmbeddingDto } from './dto/productEmbedding.dto';
 
 @Controller('products')
 export class ProductsController {
@@ -27,7 +26,6 @@ export class ProductsController {
 
   @Get(':id')
   getProducById(@Param('id', ParseUUIDPipe) id: string){
-    // const productById = this.productsService.findRelationsCategory(id);
     const productById = this.productsService.getProductById(id);
     return productById;
   }
@@ -39,11 +37,11 @@ export class ProductsController {
     return messageNewProduct;
   }
 
-  @Post()
+  @Post('/embeddings')
   @Roles(Role.Admin)
   @UseGuards(AuthGuard, RolesGuard)
-  createProductEmmbedding( productEmbeddingDto: ProductEmbeddingDto){
-    const productEmbedding = this.productsService.createProductEmbedding(productEmbeddingDto)
+  createProductEmmbedding(@Body() productEmbeddingDto: ProductDto | ProductDto[]){
+    return this.productsService.createProductEmbedding(productEmbeddingDto)
   }
   
   @Put(':id')

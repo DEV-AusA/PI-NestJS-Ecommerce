@@ -16,7 +16,6 @@ const config = {
     // logging: true, // ["error"], <= solo muestre errores de la DB
     subscribers: [],
     entities: ['./src/**/*.entity{.ts,.js}'],
-    // entities: [Products, Orders, OrderDetails, User],
     migrations: ['dist/migrations/*{.ts,.js}'],
     timestamp: "timestamp-z",
 }

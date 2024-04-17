@@ -28,13 +28,6 @@ export class UsersController {
     return users;
   }
 
-  @Get('admin')
-  @Roles(Role.Admin) // Rol Guard TEST
-  @UseGuards(AuthGuard, RolesGuard) // 1° valido el login y token 2° valido el rol
-  getAdmin() {
-    return 'Ruta ADMIN X ACA';
-  }
-
   @Get('auth0/protected')
   getAuth0(@Req() request: any) {
     //recibo la data de registro de Auth0

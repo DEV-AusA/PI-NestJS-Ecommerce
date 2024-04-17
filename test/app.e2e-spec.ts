@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ClassSerializerInterceptor, HttpStatus, INestApplication, ValidationPipe } from '@nestjs/common';
+import { BadRequestException, ClassSerializerInterceptor, HttpStatus, INestApplication, UnauthorizedException, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
-import { AppModule } from './../src/app.module';
+import { AppModule } from '../src/app.module';
 import { User } from '../src/users/entities/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import {config as dotenvConfig} from 'dotenv';
@@ -94,16 +94,18 @@ describe('APP-ECCOMERCE Test (E2E)', () => {
         
         describe('Auth : Rol User', () => {
 
-            it('POST /auth/signup : A new user must be a created', async () => {
+            it('POST /auth/signup : the new user should not be a created if the email is incorrect format', async () => {
                 
                 const req = await request(app.getHttpServer())
                 .post(`/auth/signup`)
-                .send(mockUser)        
+                .send({...mockUser, email: 'correo.mail.com'})            
                 
-                expect(req.status).toBe(HttpStatus.CREATED);
+                expect(req.status).toBe(HttpStatus.BAD_REQUEST);
+                expect(req.body.message).toEqual(['email must be an email']);
             });
+
     
-            it('POST /auth/signup : A new user not be a created if the passwors is incorrect format', async () => {
+            it('POST /auth/signup : a new user not be a created if the passwors is incorrect format', async () => {
     
                 const req = await request(app.getHttpServer())
                 .post('/auth/signup')
@@ -112,20 +114,73 @@ describe('APP-ECCOMERCE Test (E2E)', () => {
                 expect(req.status).toBe(HttpStatus.BAD_REQUEST);
             });
 
-            it('POST /auth/signin User: The user must have a successful login', async () => {
+            it('POST /auth/signup : A new user must be a created', async () => {
+                
+                const req = await request(app.getHttpServer())
+                .post(`/auth/signup`)
+                .send(mockUser)        
+                
+                expect(req.status).toBe(HttpStatus.CREATED);
+            });
+
+            it('POST /auth/signup : throw error if the email alredy exists', async () => {
+                let req: any;
+                
+                try {
+                    req = await request(app.getHttpServer())
+                    .post(`/auth/signup`)
+                    .send(mockUser)                               
+                    
+                } catch (error) {
+                    expect(req.status).toBe(HttpStatus.BAD_REQUEST);
+                    expect(error).toBeInstanceOf(BadRequestException);
+                    expect(error.message).toEqual('Ya existe un usuario registrado con ese email.');                  
+                }
+            });
+
+            it('POST /auth/signin User: throw error if the user not exist', async () => {
+                let response: any;
+
+                try {
+                    response = await request(app.getHttpServer())
+                    .post('/auth/signin')
+                    .send({...mockLoginUser, email: 'pepe@gmail.com'})       
+                    
+                } catch (error) {
+                    expect(response.status).toBe(HttpStatus.UNAUTHORIZED);
+                    expect(error).toBeInstanceOf(UnauthorizedException);
+                    expect(error.message).toEqual('Email o password incorrectos, verifique los datos e intentelo nuevamente.');
+                }
+ 
+            });
+
+            it('POST /auth/signin User: throw error if the password not match', async () => {
+                let response: any;
+
+                response = await request(app.getHttpServer())
+                .post('/auth/signin')
+                .send({...mockLoginUser, confirmPassword: 'Hol@12345'}) 
+
+                expect(response.status).toBe(HttpStatus.BAD_REQUEST);
+                expect(response.body.message).toEqual(['Las contraseñas no coinciden.']);
+   
+            });
+
+            it('POST /auth/signin User: the user must have a successful login', async () => {
     
                 const response = await request(app.getHttpServer())
                 .post('/auth/signin')
                 .send(mockLoginUser)
             
                 expect(response.status).toBe(HttpStatus.OK); // login ok
-                expect(response.body.token).toBeDefined(); // token ok    
+                expect(response.body.token).toBeDefined(); // token ok   
+                // expect(response.body).toEqual({ message: `Bienvenido nuevamente ${mockUser.name}.`, token })
             });
         });
 
         describe('Auth : Rol Admin', () => {
             
-            it('POST /auth/signin Admin: The user admin must have a successful login', async () => {
+            it('POST /auth/signin Admin: the user admin must have a successful login', async () => {
         
                 const response = await request(app.getHttpServer())
                 .post('/auth/signin')
@@ -150,7 +205,7 @@ describe('APP-ECCOMERCE Test (E2E)', () => {
 
         describe('Users : Rol User', () => {
 
-            it('GET /users A user cannot enter a route /users without authorization ', async ()=> {
+            it('GET /users a user cannot enter a route /users without authorization', async ()=> {
                 const response = await request(app.getHttpServer())
                 .get('/users')
                 .send(mockLoginUser)             
@@ -158,7 +213,7 @@ describe('APP-ECCOMERCE Test (E2E)', () => {
                 expect(response.status).toBe(HttpStatus.UNAUTHORIZED);
             });
 
-            it('PUT /users/:id A user can modify your information', async ()=> {
+            it('PUT /users/:id a user can modify your information', async ()=> {
 
                 const loginAdmin = await request(app.getHttpServer())
                 .post('/auth/signin')
@@ -186,7 +241,42 @@ describe('APP-ECCOMERCE Test (E2E)', () => {
                 expect(response.body.message).toEqual(`Datos del usuario con Id ${userId} actualizados correctamente.`);
             })
 
-            it('DELETE /users/:id The user can delete your account', async() => {
+            it('PUT /users/:id should not access to path if not have a valid format of id', async ()=> {
+                const response = await request(app.getHttpServer())
+                .put(`/users/abcd-1234-abcd`)
+                .set('Authorization', `Bearer ${tokenUser}`)     
+
+                expect(response.status).toBe(HttpStatus.BAD_REQUEST);
+                expect(response.body.message).toEqual(`Validation failed (uuid is expected)`)
+            });
+
+            it('GET /users/:id should not access to path if not have a valid token', async ()=> {
+                const response = await request(app.getHttpServer())
+                .get(`/users/${userId}`)
+                .set('Authorization', `Bearer 12345`)      
+
+                expect(response.status).toBe(HttpStatus.UNAUTHORIZED);
+                expect(response.body.message).toEqual(`Token invalido`)
+            });
+
+            it('GET /users/:id should not return a user if not logged', async ()=> {
+                const response = await request(app.getHttpServer())
+                .get(`/users/${userId}`)                 
+
+                expect(response.status).toBe(HttpStatus.UNAUTHORIZED);
+                expect(response.body.message).toEqual(`Necesitas loguearte para acceder a esta seccion.`)
+            });
+
+            it('GET /users/:id should return a user', async ()=> {
+                const response = await request(app.getHttpServer())
+                .get(`/users/${userId}`)
+                .set('Authorization', `Bearer ${tokenUser}`)   
+
+                expect(response.status).toBe(HttpStatus.OK);
+            });
+
+
+            it('DELETE /users/:id the user can delete your account', async() => {
 
                 const loginUser = await request(app.getHttpServer())
                 .post('/auth/signin')
@@ -206,19 +296,16 @@ describe('APP-ECCOMERCE Test (E2E)', () => {
 
         describe('Users : Rol Admin', ()=> {
 
-            it('GET /users Find all users', async()=> {
+            it('GET /users find all users', async()=> {
                 const response = await request(app.getHttpServer())
                 .get('/users')
-                .set('Authorization', `Bearer ${tokenAdmin}`)
-
-                console.log(response.body);
-                
+                .set('Authorization', `Bearer ${tokenAdmin}`)                
 
                 expect(response.status).toBe(HttpStatus.OK);
                 expect(response.body).toBeInstanceOf(Array);
             })
 
-            it('GET /users/:id Find a user by name', async ()=> {
+            it('GET /users/:id find a user by name', async ()=> {
                 const response = await request(app.getHttpServer())
                 .get('/users')
                 .query({ name: 'Cesar Ausa' })
@@ -228,10 +315,6 @@ describe('APP-ECCOMERCE Test (E2E)', () => {
             })            
         })
     })
-
-
-
-
   afterAll(async () => {
     await app.close(); // cierra la conectio al terminar los tests
   });

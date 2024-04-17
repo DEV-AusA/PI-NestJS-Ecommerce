@@ -25,3 +25,18 @@
 ## Description
 
 Proyecto Backend de un ecommerce utilizando el framework [Nest](https://github.com/nestjs/nest).
+
+## comandos docker
+
+docker compose up
+
+## Deploy
+
+crear cuenta en GitHub
+Ir al proyecto
+Ir a Settings->Secrets and variables y crear VAR-ENT
+    DOCKERHUB_TOKEN
+    DOCKERHUB_USERNAME
+Ir a Actions y crear uno Custom
+
+

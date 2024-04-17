@@ -13,8 +13,14 @@ export class Products {
     @Column({ type:'varchar', unique: true, length: 50, nullable: false })
     name: string;
 
+    @Column({ type: 'numeric' , array: true, nullable: true, select: false })
+    nameEmbedding: number[];
+
     @Column({ type:'varchar', nullable: false })
     description: string;
+
+    @Column({ type: 'numeric' , array: true , nullable: true, select: false })
+    descriptionEmbedding: number[];
 
     @Column({ type: 'decimal', precision: 10, scale: 2, nullable: false })
     price: number;

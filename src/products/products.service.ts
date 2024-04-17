@@ -9,8 +9,8 @@ export class ProductsService {
   // injecto la dependencia ProductsRepository
   constructor(private readonly productsRepository: ProductsRepository) {}
 
-  createProductEmbedding(produc: any) {
-    throw new Error('Method not implemented.');
+  createProductEmbedding(product: ProductDto | ProductDto[]) {
+    return this.productsRepository.createProductEmbedding(product)
   }
 
   getProducts(paginationProductDto: PaginationProductDto) {
