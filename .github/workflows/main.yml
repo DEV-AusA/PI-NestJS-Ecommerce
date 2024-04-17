@@ -27,6 +27,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           content: .
-          file: ./DockerFile
+          file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/eccomerce-dev-ausa:latest
