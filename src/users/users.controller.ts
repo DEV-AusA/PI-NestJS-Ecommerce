@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, HttpCode, Param, ParseUUIDPipe, Put, Que
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update.user.dto';
 import { FilterPasswordInterceptor } from '../interceptors/filterPassword.interceptor';
-import { AuthGuard } from '../auth/guards/auth.guard';
+import { AuthGuard } from '../guards/auth.guard';
 import { Roles } from '../decorators/roles.decorator';
 import { Role } from '../helpers/roles.enum';
 import { RolesGuard } from '../guards/roles.guard';

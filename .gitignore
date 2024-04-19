@@ -3,6 +3,7 @@
 /node_modules
 /build
 /extras.ts
+/endpoints.md
 
 # Logs
 logs

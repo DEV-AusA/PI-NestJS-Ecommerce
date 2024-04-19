@@ -2,7 +2,7 @@ import { Controller, Post, Param, ParseUUIDPipe, UseInterceptors, UploadedFile, 
 import { FilesService } from './files.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { fileFilter } from '../helpers/file.filter.helper';
-import { AuthGuard } from '../auth/guards/auth.guard';
+import { AuthGuard } from '../guards/auth.guard';
 
 @Controller('files')
 export class FilesController {

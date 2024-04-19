@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
-import { ProductDto } from './dto/products.dto';
+import { ProductItemDto } from './dto/products.dto';
 import { UpdateProductDto } from './dto/update.product.dto';
 import { PaginationProductDto } from './dto/pagination.product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -9,11 +9,12 @@ import { Categories } from '../categories/entities/category.entity';
 import { validate as isUUID } from "uuid";
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import {config as dotenvConfig} from 'dotenv'
+import { MultipleProductsDto } from './dto/products.multiple.dto';
 dotenvConfig({ path: '.development.env' });
 
 @Injectable()
 export class ProductsRepository {
-  //propiedad para el handle de errores
+  
   private readonly logger = new Logger('ProductsRepository');
 
   constructor(
@@ -35,12 +36,12 @@ export class ProductsRepository {
     const products = await this.productsRepository.find();
     const productosPaginados = products.slice(startIndex, endIndex);
 
-    return {page , productosPaginados};    
+    return {page , pagination: productosPaginados};    
     }
   
     async getProductByName(name: string) {
       const productByName = await this.productsRepository.findOneBy({name})
-      if(!productByName) throw new NotFoundException(`No se encontro el producto con el nombre "${name}" intentelo nuevamente.`)
+      if(!productByName) throw new NotFoundException(`No se encontro el producto con el nombre '${name}' intentelo nuevamente.`)
       return productByName;
     }
 
@@ -54,30 +55,48 @@ export class ProductsRepository {
     return product;
   }
 
-  async createProduct(productDto: ProductDto | ProductDto[]) {
+  async createMultipleProducts(multipleProductsDto: MultipleProductsDto) {
 
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     const modelEmbedding = genAI.getGenerativeModel({ model: "embedding-001"});
 
     let newProduct: Products;
-    // query para transactions
-    const queryRunner: QueryRunner = this.dataSource.createQueryRunner();
-    //conecto con la db
+    const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
-    // star transactions
     await queryRunner.startTransaction();
-
+    let result = [];
+    
     try {
 
-      let result = [];
-      // NO ARRAY product
-      if (!Array.isArray(productDto)) {
-        const { category, ...productDetails } = productDto;
+      for( const product of multipleProductsDto.products ) {
+        const { category, ...productDetails } = product;
 
-        const product = await this.productsRepository.findOneBy({name: productDetails.name});
-        if(product) throw new BadRequestException(`El producto ${productDetails.name} ya existe en la base de datos.`);
+        const productFounded = await this.productsRepository.findOneBy({ name: productDetails.name });
+        if(productFounded) throw new BadRequestException(`El producto ${productDetails.name} ya existe en la base de datos.`);
+        
+        //ARRAY  category
+        if (typeof category !== 'string') {
+          // creo y guardo las categorias para el product
+          const categories = await Promise.all(category.map(async (categoryName) => {
+            const newCategory = await queryRunner.manager.create(Categories, { name: categoryName });
+            return await queryRunner.manager.save(newCategory);
+          }));
+          //embeddings
+          const resultNameEmbedding = await modelEmbedding.embedContent(productDetails.name);
+          const nameEmbedding = await resultNameEmbedding.embedding.values;
+          const resultDescriptionEmbedding = await modelEmbedding.embedContent(productDetails.description);
+          const descriptionEmbedding = await resultDescriptionEmbedding.embedding.values;
+          //creo el product con su category
+          newProduct = await queryRunner.manager.create(Products, {
+            ...productDetails,
+            nameEmbedding,
+            descriptionEmbedding,
+            img_url: product.imgUrl,
+            category: categories
+          });     
+        }
         //NO ARRAY  category
-        if (typeof category === 'string') {
+        else {     
           const newCategory = await queryRunner.manager.create(Categories, { name: category});
           const savedCategory = await queryRunner.manager.save(newCategory);
           //embeddings
@@ -90,93 +109,94 @@ export class ProductsRepository {
             ...productDetails,
             nameEmbedding,
             descriptionEmbedding,
-            img_url: productDto.imgUrl,
+            img_url: product.imgUrl,
             category: [savedCategory]
           });     
         }
-        // ARRAY category
-        else {
-          // creo y guardo las categorias para el product
-          const categories = await Promise.all(category.map(async (categoryName) => {
-          const newCategory = await queryRunner.manager.create(Categories, { name: categoryName });
-          return await queryRunner.manager.save(newCategory);
-          }));
-          //embeddings
-          const resultNameEmbedding = await modelEmbedding.embedContent(productDetails.name);
-          const nameEmbedding = await resultNameEmbedding.embedding.values;
-          const resultDescriptionEmbedding = await modelEmbedding.embedContent(productDetails.description);
-          const descriptionEmbedding = await resultDescriptionEmbedding.embedding.values;
-          //creo el product con su category
-          newProduct = await queryRunner.manager.create(Products, {
-            ...productDetails,
-            nameEmbedding,
-            descriptionEmbedding,
-            img_url: productDto.imgUrl,
-            category: categories
-          });     
-        }
-        // save del product
-        await queryRunner.manager.save(newProduct);
+        // save product
         result.push(newProduct);
-      }
-      // ARRAY product
-      else {
-        for( const product of productDto ) {
-          const { category, ...productDetails } = product;
-
-          const productFounded = await this.productsRepository.findOneBy({ name: productDetails.name });
-          if(productFounded) throw new BadRequestException(`El producto ${productDetails.name} ya existe en la base de datos.`);
-          
-          //ARRAY  category
-          if (typeof category !== 'string') {
-            // creo y guardo las categorias para el product
-            const categories = await Promise.all(category.map(async (categoryName) => {
-              const newCategory = await queryRunner.manager.create(Categories, { name: categoryName });
-              return await queryRunner.manager.save(newCategory);
-            }));
-            //embeddings
-            const resultNameEmbedding = await modelEmbedding.embedContent(productDetails.name);
-            const nameEmbedding = await resultNameEmbedding.embedding.values;
-            const resultDescriptionEmbedding = await modelEmbedding.embedContent(productDetails.description);
-            const descriptionEmbedding = await resultDescriptionEmbedding.embedding.values;
-            //creo el product con su category
-            newProduct = await queryRunner.manager.create(Products, {
-              ...productDetails,
-              nameEmbedding,
-              descriptionEmbedding,
-              img_url: product.imgUrl,
-              category: categories
-            });     
-          }
-          //NO ARRAY  category
-          else {     
-            const newCategory = await queryRunner.manager.create(Categories, { name: category});
-            const savedCategory = await queryRunner.manager.save(newCategory);
-            //embeddings
-            const resultNameEmbedding = await modelEmbedding.embedContent(productDetails.name);
-            const nameEmbedding = await resultNameEmbedding.embedding.values;
-            const resultDescriptionEmbedding = await modelEmbedding.embedContent(productDetails.description);
-            const descriptionEmbedding = await resultDescriptionEmbedding.embedding.values;
-            //creo el product con su category
-            newProduct = await queryRunner.manager.create(Products, {
-              ...productDetails,
-              nameEmbedding,
-              descriptionEmbedding,
-              img_url: product.imgUrl,
-              category: [savedCategory]
-            });     
-          }
-          // save del product
-          result.push(newProduct);
-          await queryRunner.manager.save(newProduct);
-        }
+        await queryRunner.manager.save(newProduct);
       }
 
       await queryRunner.commitTransaction();
 
       const productsListSaved = result.map((product) => product.name);
-      console.log(productsListSaved);     
+      const messageNewProducts = { message: `Products creados correctamente: ${productsListSaved}`};
+      return messageNewProducts;   
+      
+    }
+    catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error
+    }
+    finally{
+      await queryRunner.release();
+    }
+  }
 
+  async createProduct(productDto: ProductItemDto) {
+
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const modelEmbedding = genAI.getGenerativeModel({ model: "embedding-001"});
+
+    let newProduct: Products;
+    const queryRunner: QueryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    let result = [];
+
+    try {
+      
+      const { category, ...productDetails } = productDto;
+
+      const product = await this.productsRepository.findOneBy({name: productDetails.name});
+      if(product) throw new BadRequestException(`El producto ${productDetails.name} ya existe en la base de datos.`);
+      //NO ARRAY  category
+      if (typeof category === 'string') {
+        const newCategory = await queryRunner.manager.create(Categories, { name: category});
+        const savedCategory = await queryRunner.manager.save(newCategory);
+        //embeddings
+        const resultNameEmbedding = await modelEmbedding.embedContent(productDetails.name);
+        const nameEmbedding = await resultNameEmbedding.embedding.values;
+        const resultDescriptionEmbedding = await modelEmbedding.embedContent(productDetails.description);
+        const descriptionEmbedding = await resultDescriptionEmbedding.embedding.values;
+        //creo el product con su category
+        newProduct = await queryRunner.manager.create(Products, {
+          ...productDetails,
+          nameEmbedding,
+          descriptionEmbedding,
+          img_url: productDto.imgUrl,
+          category: [savedCategory]
+        });     
+      }
+      // ARRAY category
+      else {
+        // creo y guardo las categorias para el product
+        const categories = await Promise.all(category.map(async (categoryName) => {
+        const newCategory = await queryRunner.manager.create(Categories, { name: categoryName });
+        return await queryRunner.manager.save(newCategory);
+        }));
+        //embeddings
+        const resultNameEmbedding = await modelEmbedding.embedContent(productDetails.name);
+        const nameEmbedding = await resultNameEmbedding.embedding.values;
+        const resultDescriptionEmbedding = await modelEmbedding.embedContent(productDetails.description);
+        const descriptionEmbedding = await resultDescriptionEmbedding.embedding.values;
+        //creo el product con su category
+        newProduct = await queryRunner.manager.create(Products, {
+          ...productDetails,
+          nameEmbedding,
+          descriptionEmbedding,
+          img_url: productDto.imgUrl,
+          category: categories
+        });     
+      }
+      // save product
+      await queryRunner.manager.save(newProduct);
+      result.push(newProduct);
+      
+      await queryRunner.commitTransaction();
+
+      const productsListSaved = result.map((product) => product.name);
       const messageNewProducts = { message: `Products creados correctamente: ${productsListSaved}`};
       return messageNewProducts;    
       

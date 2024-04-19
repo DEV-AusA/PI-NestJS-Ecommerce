@@ -1,6 +1,6 @@
 import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, IsUrl, MinLength } from 'class-validator';
 
-export class ProductDto {
+export class ProductItemDto {
   @IsNotEmpty()
   @IsString()
   @MinLength(3)
@@ -29,13 +29,12 @@ export class ProductDto {
   @IsNumber()
   readonly stock: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   @IsUrl()
-  readonly imgUrl: string;
+  readonly imgUrl?: string;
 
   @IsNotEmpty()
   @IsString({ each: true })
-  // @IsArray()
   readonly category: string[] | string
 }

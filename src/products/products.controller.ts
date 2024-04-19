@@ -1,12 +1,13 @@
 import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ProductsService } from './products.service';
-import { ProductDto } from './dto/products.dto';
+import { ProductItemDto } from './dto/products.dto';
 import { UpdateProductDto } from './dto/update.product.dto';
 import { PaginationProductDto } from './dto/pagination.product.dto';
-import { AuthGuard } from '../auth/guards/auth.guard';
+import { AuthGuard } from '../guards/auth.guard';
 import { Roles } from '../decorators/roles.decorator';
 import { Role } from '../helpers/roles.enum';
 import { RolesGuard } from '../guards/roles.guard';
+import { MultipleProductsDto } from './dto/products.multiple.dto';
 
 @Controller('products')
 export class ProductsController {
@@ -32,14 +33,21 @@ export class ProductsController {
 
   @Post()
   @UseGuards(AuthGuard)
-  createProduct(@Body() productDto: ProductDto | ProductDto[]){
+  createProduct(@Body() productDto: ProductItemDto){
     const messageNewProduct = this.productsService.createProduct(productDto);
+    return messageNewProduct;
+  }
+
+  @Post('multiple')
+  @UseGuards(AuthGuard)
+  createMultipleProducts(@Body() multipleProductsDto: MultipleProductsDto){
+    const messageNewProduct = this.productsService.createMultipleProducts(multipleProductsDto);
     return messageNewProduct;
   }
   
   @Put(':id')
   @Roles(Role.Admin)
-  @UseGuards(AuthGuard, RolesGuard) //RolGuard
+  @UseGuards(AuthGuard, RolesGuard)
   updateProduct(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateProducDto: UpdateProductDto) {

@@ -54,11 +54,17 @@ export class OrdersRepository {
         });
         const savedOrder = await queryRunner.manager.save(order);    
         
-        const productsOrder = await Promise.all(products.map(async (product) => {      
-          const newProduct = await queryRunner.manager.findOneBy(Products, { id: product.id });
+        const productsOrder = await Promise.all(products.map(async (product) => {     
+          const newProduct = await queryRunner.manager
+          .createQueryBuilder(Products, 'product')
+          .where('product.id = :id', { id: product.id })
+          .addSelect('product.descriptionEmbedding')
+          .addSelect('product.nameEmbedding')
+          .getOne();
+
           if(!newProduct) throw new NotFoundException(`Es producto con id ${product.id} no existe.`);
           return newProduct;
-        }));
+        })); 
             
         const availableProducts = productsOrder.filter(product => product.stock > 0); // filter stock > 0
 
