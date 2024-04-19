@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put, Query, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { ProductDto } from './dto/products.dto';
 import { UpdateProductDto } from './dto/update.product.dto';
@@ -32,16 +32,9 @@ export class ProductsController {
 
   @Post()
   @UseGuards(AuthGuard)
-  createProduct(@Body() productDto: ProductDto){
+  createProduct(@Body() productDto: ProductDto | ProductDto[]){
     const messageNewProduct = this.productsService.createProduct(productDto);
     return messageNewProduct;
-  }
-
-  @Post('/embeddings')
-  @Roles(Role.Admin)
-  @UseGuards(AuthGuard, RolesGuard)
-  createProductEmmbedding(@Body() productEmbeddingDto: ProductDto | ProductDto[]){
-    return this.productsService.createProductEmbedding(productEmbeddingDto)
   }
   
   @Put(':id')

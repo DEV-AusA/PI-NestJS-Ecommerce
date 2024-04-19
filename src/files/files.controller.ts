@@ -1,4 +1,4 @@
-import { Controller, Post, Param, ParseUUIDPipe, UseInterceptors, UploadedFile, UploadedFiles, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator, BadRequestException, UseGuards } from '@nestjs/common';
+import { Controller, Post, Param, ParseUUIDPipe, UseInterceptors, UploadedFile, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator, BadRequestException, UseGuards } from '@nestjs/common';
 import { FilesService } from './files.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { fileFilter } from '../helpers/file.filter.helper';
@@ -29,8 +29,7 @@ export class FilesController {
     )
     file: Express.Multer.File
   )
-  {   
-    
+  {    
     return this.filesService.uploadImage( productId, file);
   }
 
@@ -39,7 +38,7 @@ export class FilesController {
   @UseInterceptors(FileInterceptor('file', {
     //validations
     fileFilter: fileFilter,
-    limits: { fileSize: 100*1024 } // tamaño maximo 100 KB
+    limits: { fileSize: 100*1024 }, // max 100 KB
   }))
   async uploadProfilePicture(
     @Param('id', ParseUUIDPipe) productId : string,

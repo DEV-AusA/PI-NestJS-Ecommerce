@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Headers, HttpCode, Param, ParseUUIDPipe, Post, Put, Query, Req, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, ParseUUIDPipe, Put, Query, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update.user.dto';
 import { FilterPasswordInterceptor } from '../interceptors/filterPassword.interceptor';
@@ -7,33 +7,23 @@ import { Roles } from '../decorators/roles.decorator';
 import { Role } from '../helpers/roles.enum';
 import { RolesGuard } from '../guards/roles.guard';
 
-@Controller('users') //     <= endPoint
+@Controller('users')
 export class UsersController {
-  // injecto la dependencia UserServices
   constructor(
     private readonly userServices: UsersService ) {}
 
   @Get()
   @Roles(Role.Admin) // Roles
   @UseGuards(AuthGuard, RolesGuard) // RolesGuard
-  @UseInterceptors(FilterPasswordInterceptor) // interceptor filter password
+  @UseInterceptors(FilterPasswordInterceptor)
   getUser(@Query('name') name?: string) {
 
-    // si mandan el name, retorna ese user
     if (name) {
       return this.userServices.getUserByName(name);
     }
 
     const users = this.userServices.getUsers();    
     return users;
-  }
-
-  @Get('auth0/protected')
-  getAuth0(@Req() request: any) {
-    //recibo la data de registro de Auth0
-    console.log(request.oidc.user);
-    // function que retorna true del login de Auth0
-    console.log(request.oidc.isAuthenticated());    
   }
 
   // Custom code error 418
@@ -45,7 +35,7 @@ export class UsersController {
 
   @Get(':id')
   @UseGuards(AuthGuard)
-  @UseInterceptors(FilterPasswordInterceptor) // interceptor filter password
+  @UseInterceptors(FilterPasswordInterceptor)
   getUserById(@Param('id', ParseUUIDPipe) id: string){
     
     const user = this.userServices.getUserById(id)
@@ -56,8 +46,8 @@ export class UsersController {
   @UseGuards(AuthGuard)
   updateUser(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() updateUserDto: UpdateUserDto)
-  {
+    @Body() updateUserDto: UpdateUserDto){
+      
     const messageUserUpdated = this.userServices.updateUser(id, updateUserDto);
     return messageUserUpdated;
   }

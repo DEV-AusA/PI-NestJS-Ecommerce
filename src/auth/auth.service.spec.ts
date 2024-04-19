@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
 import { JwtService } from '@nestjs/jwt';
-import { User } from 'src/users/entities/user.entity';
+import { User } from '../../src/users/entities/user.entity';
 import { Repository } from 'typeorm';
-import { UsersRepository } from 'src/users/users.repository';
+import { UsersRepository } from '../../src/users/users.repository';
 import { AuthRepository } from './auth.repository';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { LoginDataDto } from './dto/auth.login.dto';
@@ -35,25 +35,18 @@ describe('AuthService', () => {
             JwtService,
             AuthRepository,
             {
-              // custom providers x aca
-              provide: UsersRepository, //custom provider para el mock AuthRepository
-              useValue: mockUserRepository, //injecto el userRepositoryMock
+              provide: UsersRepository,
+              useValue: mockUserRepository,
             },
             {
-              provide: getRepositoryToken(User), //genera un token unico para el repositorio de TypeORM asociado a la entidad User
-              useClass: Repository, // cuando necesite inyectar el repositorio asociado a la entidad User, debe proporcionar un MOCKde la instancia de la clase Repository
+              provide: getRepositoryToken(User),
+              useClass: Repository,
             },
-            // {
-            //   provide: JwtService,
-            //   useValue: {
-            //     sign: jest.fn().mockReturnValue('mockedToken'), // mock para la firma del token
-            //   },
-            // },
         ],
     }).compile();
 
     authService = module.get<AuthService>(AuthService);
-    mockUserRepositoryTypeOrm = module.get<Repository<User>>(getRepositoryToken(User)); // para los metodos del repository de TypeORM
+    mockUserRepositoryTypeOrm = module.get<Repository<User>>(getRepositoryToken(User));
     mockJwtService = module.get<JwtService>(JwtService);
     mockUserRepositoryTypeOrm.update = jest.fn(); // metod update OMIT
   });
@@ -82,7 +75,6 @@ describe('AuthService', () => {
     expect(authService).toBeDefined();
   });
 
-    // OJO TEST Asincrono
   it('SignUp: throw error if the email alredy exists', async () => {
     jest.spyOn(mockUserRepositoryTypeOrm, 'findOneBy').mockResolvedValueOnce(mockUser as User); 
 
@@ -148,13 +140,13 @@ describe('AuthService', () => {
   
   it('SignIn: the user must have a successful login', async () => {
 
-    jest.spyOn(mockUserRepositoryTypeOrm, 'findOneBy').mockResolvedValueOnce(mockUser as User); //mock user finded
-    jest.spyOn(bcrypt, 'compare').mockResolvedValueOnce(true); //mock match password
+    jest.spyOn(mockUserRepositoryTypeOrm, 'findOneBy').mockResolvedValueOnce(mockUser as User);
+    jest.spyOn(bcrypt, 'compare').mockResolvedValueOnce(true);
     jest.spyOn(mockJwtService, 'sign').mockReturnValue('mockedToken'); // firma mock
 
     const loginOk = await authService.signIn(mockLoginData);
 
-    expect(loginOk.message).toEqual(`Bienvenido nuevamente ${mockUser.name}.`); // verify name
+    expect(loginOk.message).toEqual(`Bienvenido nuevamente ${mockUser.name}.`);
     expect(loginOk.token).toEqual('mockedToken'); // verify token
   });
 

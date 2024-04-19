@@ -1,8 +1,7 @@
-import { Controller, Get, Post, Body, ParseUUIDPipe, Param, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, Body, ParseUUIDPipe, Param, UseGuards } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { AuthGuard } from '../auth/guards/auth.guard';
-import { FilterPasswordInterceptor } from '../interceptors/filterPassword.interceptor';
 
 @Controller('orders')
 export class OrdersController {

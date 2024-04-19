@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString, Matches, MaxLength, MinLength, Validate } from "class-validator";
+import { IsEmail, IsNotEmpty, IsString, MaxLength, MinLength, Validate } from "class-validator";
 import { MatchPassword } from "../../decorators/match.password.decorator";
 
 export class LoginDataDto {

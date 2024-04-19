@@ -1,4 +1,4 @@
-import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, IsUrl, Length, MinLength } from 'class-validator';
+import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, IsUrl, MinLength } from 'class-validator';
 
 export class ProductDto {
   @IsNotEmpty()

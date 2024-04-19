@@ -9,9 +9,9 @@ export class FilterPasswordInterceptor implements NestInterceptor {
     const response = next.handle().pipe(
       map(data => {
         
-        return Array.isArray(data) // retorna un array  
-        ? data.map(obj => this.filterPassword(obj))   // si es un array filtra el password del mismo y lo retorna
-        : this.filterPassword(data); // si no es un array lo filtra del objeto y lo retorna
+        return Array.isArray(data)
+        ? data.map(response => this.filterPassword(response))
+        : this.filterPassword(data);
 
       }),
     );
@@ -19,9 +19,7 @@ export class FilterPasswordInterceptor implements NestInterceptor {
     return response;
   }
 
-  // metodo para filtrar el password
-  private filterPassword(createUserDto: CreateUserDto): Omit<CreateUserDto, 'password'>{ // uso el Omit para utilizar el mismo DTO y omitir el password en el return
-    // Destructuro y solo uso el resto del profile
+  private filterPassword(createUserDto: CreateUserDto): Omit<CreateUserDto, 'password'>{
     const { password, ...profile } = createUserDto;
     return profile;
   }

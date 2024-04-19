@@ -6,12 +6,8 @@ import { PaginationProductDto } from './dto/pagination.product.dto';
 
 @Injectable()
 export class ProductsService {
-  // injecto la dependencia ProductsRepository
+  
   constructor(private readonly productsRepository: ProductsRepository) {}
-
-  createProductEmbedding(product: ProductDto | ProductDto[]) {
-    return this.productsRepository.createProductEmbedding(product)
-  }
 
   getProducts(paginationProductDto: PaginationProductDto) {
     const products = this.productsRepository.getProducts(paginationProductDto);
@@ -25,11 +21,6 @@ export class ProductsService {
   getProductById(id: string) {
     const productById = this.productsRepository.getProductById(id);
     return productById;
-  }
-
-  findRelationsCategory(id: string) {
-    const findRelationsProduct = this.productsRepository.findRelationsCategory(id);
-    return findRelationsProduct;
   }
 
   createProduct(productDto: ProductDto | ProductDto[]) {

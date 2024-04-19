@@ -11,13 +11,11 @@ export class EmbeddingCosineService {
   ) {}
 
   async calculateEmbeddingCosineDistance( questionVector: number[] ,columnName: string ) {
-    // get all embedding from descriptionEmbeddings
-    // const allEmbeddingProducts = await this.embeddingProductRepository.find();    
+    // get all embedding from descriptionEmbeddings 
     const allEmbeddingProducts = await this.embeddingProductRepository
     .createQueryBuilder('product')
     .addSelect('product.descriptionEmbedding')
     .getMany();
-    // .select(['product.descriptionEmbedding'])    
 
     // Calcular el producto escalar entre el vectorA y cada vector de la base de datos
     const productsWithCosineDistances = allEmbeddingProducts.map(product => {

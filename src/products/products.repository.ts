@@ -18,10 +18,10 @@ export class ProductsRepository {
 
   constructor(
     @InjectRepository(Products)
-    private readonly productsRepository: Repository<Products>, // Repository de typeorm para que maneje la entity Products
+    private readonly productsRepository: Repository<Products>,
     @InjectRepository(Categories)
     private readonly categoriesRepository: Repository<Categories>,
-    private readonly dataSource: DataSource, // transactions
+    private readonly dataSource: DataSource,
   ){}
 
    async getProducts(paginationProductDto: PaginationProductDto) {
@@ -46,21 +46,18 @@ export class ProductsRepository {
 
    async getProductById(id: string) {
 
-    let product: Products;
-    if (isUUID(id)) {
+    if (!isUUID(id)) throw new BadRequestException(`El id del producto no contiene el formato correcto de UUID`);
       
-      return this.productsRepository
-      .createQueryBuilder('product')
-      .select(['product.nameEmbedding'])
-      .where('product.id = :id', { id })
-      .getMany();
-      // product = await this.productsRepository.findOneBy({ id });     
-    }
-    if (!product) throw new NotFoundException(`El producto con id ${id} no existe.`); // exception filter de NestJS
+    const product = await this.productsRepository.findOneBy({ id });     
+    if (!product) throw new NotFoundException(`El producto con id ${id} no existe.`);
+
     return product;
   }
 
   async createProduct(productDto: ProductDto | ProductDto[]) {
+
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const modelEmbedding = genAI.getGenerativeModel({ model: "embedding-001"});
 
     let newProduct: Products;
     // query para transactions
@@ -76,13 +73,23 @@ export class ProductsRepository {
       // NO ARRAY product
       if (!Array.isArray(productDto)) {
         const { category, ...productDetails } = productDto;
+
+        const product = await this.productsRepository.findOneBy({name: productDetails.name});
+        if(product) throw new BadRequestException(`El producto ${productDetails.name} ya existe en la base de datos.`);
         //NO ARRAY  category
         if (typeof category === 'string') {
           const newCategory = await queryRunner.manager.create(Categories, { name: category});
           const savedCategory = await queryRunner.manager.save(newCategory);
+          //embeddings
+          const resultNameEmbedding = await modelEmbedding.embedContent(productDetails.name);
+          const nameEmbedding = await resultNameEmbedding.embedding.values;
+          const resultDescriptionEmbedding = await modelEmbedding.embedContent(productDetails.description);
+          const descriptionEmbedding = await resultDescriptionEmbedding.embedding.values;
           //creo el product con su category
           newProduct = await queryRunner.manager.create(Products, {
             ...productDetails,
+            nameEmbedding,
+            descriptionEmbedding,
             img_url: productDto.imgUrl,
             category: [savedCategory]
           });     
@@ -94,9 +101,16 @@ export class ProductsRepository {
           const newCategory = await queryRunner.manager.create(Categories, { name: categoryName });
           return await queryRunner.manager.save(newCategory);
           }));
+          //embeddings
+          const resultNameEmbedding = await modelEmbedding.embedContent(productDetails.name);
+          const nameEmbedding = await resultNameEmbedding.embedding.values;
+          const resultDescriptionEmbedding = await modelEmbedding.embedContent(productDetails.description);
+          const descriptionEmbedding = await resultDescriptionEmbedding.embedding.values;
           //creo el product con su category
           newProduct = await queryRunner.manager.create(Products, {
             ...productDetails,
+            nameEmbedding,
+            descriptionEmbedding,
             img_url: productDto.imgUrl,
             category: categories
           });     
@@ -109,6 +123,10 @@ export class ProductsRepository {
       else {
         for( const product of productDto ) {
           const { category, ...productDetails } = product;
+
+          const productFounded = await this.productsRepository.findOneBy({ name: productDetails.name });
+          if(productFounded) throw new BadRequestException(`El producto ${productDetails.name} ya existe en la base de datos.`);
+          
           //ARRAY  category
           if (typeof category !== 'string') {
             // creo y guardo las categorias para el product
@@ -116,20 +134,34 @@ export class ProductsRepository {
               const newCategory = await queryRunner.manager.create(Categories, { name: categoryName });
               return await queryRunner.manager.save(newCategory);
             }));
+            //embeddings
+            const resultNameEmbedding = await modelEmbedding.embedContent(productDetails.name);
+            const nameEmbedding = await resultNameEmbedding.embedding.values;
+            const resultDescriptionEmbedding = await modelEmbedding.embedContent(productDetails.description);
+            const descriptionEmbedding = await resultDescriptionEmbedding.embedding.values;
             //creo el product con su category
             newProduct = await queryRunner.manager.create(Products, {
               ...productDetails,
+              nameEmbedding,
+              descriptionEmbedding,
               img_url: product.imgUrl,
               category: categories
             });     
           }
           //NO ARRAY  category
           else {     
-            const newCategory = await queryRunner.manager.create(Categories, { name: category})
-            const savedCategory = await queryRunner.manager.save(newCategory)          
+            const newCategory = await queryRunner.manager.create(Categories, { name: category});
+            const savedCategory = await queryRunner.manager.save(newCategory);
+            //embeddings
+            const resultNameEmbedding = await modelEmbedding.embedContent(productDetails.name);
+            const nameEmbedding = await resultNameEmbedding.embedding.values;
+            const resultDescriptionEmbedding = await modelEmbedding.embedContent(productDetails.description);
+            const descriptionEmbedding = await resultDescriptionEmbedding.embedding.values;
             //creo el product con su category
             newProduct = await queryRunner.manager.create(Products, {
               ...productDetails,
+              nameEmbedding,
+              descriptionEmbedding,
               img_url: product.imgUrl,
               category: [savedCategory]
             });     
@@ -142,14 +174,16 @@ export class ProductsRepository {
 
       await queryRunner.commitTransaction();
 
-    // const messageNewProduct = { message: `Producto con id ${newProduct.id} creado correctamente` };
-    // return messageNewProduct;
-      return result;
+      const productsListSaved = result.map((product) => product.name);
+      console.log(productsListSaved);     
+
+      const messageNewProducts = { message: `Products creados correctamente: ${productsListSaved}`};
+      return messageNewProducts;    
       
     } catch (error) {
 
       await queryRunner.rollbackTransaction();
-      this.handleDBExceptions(error)
+      throw error
     }
 
     finally{
@@ -158,12 +192,11 @@ export class ProductsRepository {
   }
 
   async updateProduct(id:string, updateProductDto: UpdateProductDto) {
-    //separo las que tienen relaciones
-    const { category, ...restToUpdate} = updateProductDto;
-    // busco el product
+    
     await this.getProductById(id);
 
-    // preload de productUpdated
+    const { category, ...restToUpdate} = updateProductDto;
+
     const product = await this.productsRepository.preload({
       id,
       ...restToUpdate
@@ -175,23 +208,21 @@ export class ProductsRepository {
     await queryRunner.startTransaction();
 
     try {
-      // si manda nueva categoria borro todas las que estan relacionadas en la DB
-      if (Array.isArray(category)) { //CORREGIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIR
+
+      if (Array.isArray(category)) {
         //borra las que existen en la DB
-        await queryRunner.manager.delete(Categories, { products: { id } }) // uso id del preload
+        await queryRunner.manager.delete(Categories, { products: { id } });
         
-        // mapeo las nuevas categories
         product.category = category.map((category) => this.categoriesRepository.create({ name: category}))        
       }
       else {
-
         await queryRunner.manager.delete( Categories, { products: { id } });
         product.category = [ this.categoriesRepository.create({ name: category }) ] 
       }
       await queryRunner.manager.save(product)
       await queryRunner.commitTransaction()
 
-      const messageUpdateProduct = { message: `El producto con id ${product.id} fue actualizado con exito.` }
+      const messageUpdateProduct = { message: `El producto ${product.name} con id ${product.id} fue actualizado con exito.` }
       return messageUpdateProduct;
 
     }
@@ -204,22 +235,6 @@ export class ProductsRepository {
     finally {
       await queryRunner.release();
     }
-
-    // let productDB = await this.getProductById(id);
-
-    // this.products = this.products.map((product) => {
-    //   if (product.id === productDB.id) {
-    //     productDB = {
-    //       ...productDB,
-    //       ...updateProductDto,
-    //       id,
-    //     }
-    //     return productDB;
-    //   }
-    //   return product;
-    // })
-    // const messageUpdateProduct = { message: `El producto con id ${productDB.id} fue actualizado con exito.` }
-    // return messageUpdateProduct;
   }
 
   async deleteProduct(id: string) {
@@ -236,87 +251,6 @@ export class ProductsRepository {
       
     }
   }
-
-  async createProductEmbedding(productEmbedding: ProductDto | ProductDto[]) {
-
-    
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    const modelEmbedding = genAI.getGenerativeModel({ model: "embedding-001"});
-    
-    try {
-      
-      if (Array.isArray(productEmbedding)) {        
-        const arrayNuevo = [];
-          
-        for(const product of productEmbedding) {
-  
-          const { name, description } = product;
-          const productFinded = await this.productsRepository.findOne({ where: {name}});
-          
-          if(!productFinded) throw new NotFoundException(`El producto "${name}" no existe en la base de datos.`);
-          // product embedding
-          const resultProductEmbedding = await modelEmbedding.embedContent(name);
-          const productEmbedding = await resultProductEmbedding.embedding.values;    
-          // suggestionUse embedding
-          const resultSuggestionsUseEmbedding = await modelEmbedding.embedContent(description);
-          const descriptionEmbedding = await resultSuggestionsUseEmbedding.embedding.values;
-    
-          productFinded.nameEmbedding = productEmbedding;
-          productFinded.descriptionEmbedding = descriptionEmbedding;
-    
-          const newProduct = await this.productsRepository.save(productFinded);
-
-          const {id, ...resto} = newProduct;
-          arrayNuevo.push(resto);
-        }
-        
-        return arrayNuevo;
-        // const message = { message: "Embeddings creados con exito"};
-        // return message;      
-      }
-      else {
-        const { name, description } = productEmbedding;
-    
-        const product = await this.productsRepository.findOne({ where: {name}});
-    
-        if(!product) throw new NotFoundException(`El producto "${name}" no existe en la base de datos.`);
-        // model embedding-001
-        // product embedding
-        const resultProductEmbedding = await modelEmbedding.embedContent(name);
-        const newProductEmbedding = await resultProductEmbedding.embedding.values;
-    
-        // suggestionUse embedding
-        const resultSuggestionsUseEmbedding = await modelEmbedding.embedContent(description);
-        const descriptionEmbedding = await resultSuggestionsUseEmbedding.embedding.values;
-    
-        product.nameEmbedding = newProductEmbedding;
-        product.descriptionEmbedding = descriptionEmbedding;
-    
-        const productsSaved = await this.productsRepository.save(product);
-
-        // arrayNuevo.push(product);
-  
-        return productsSaved;
-        // const message = { message: "Embeddings creados con exito"};  
-        // return message;
-      }
-    } catch (error) {
-
-      throw new BadRequestException(`Error al crear los Embeddings, ${error}`);      
-    }
-  }
-
-  //connect relations con QueryBuilder - testear
-  async findRelationsCategory(name: string) {
-    const product = await this.getProductByName(name)
-    const { category = [], ...productDetails } = product;
-    const productsRelations = {
-      ...productDetails,
-      category: category.map((category) => category.name)
-    }
-    return productsRelations;
-  }
-
   // handle de errores Products friendly
   private handleDBExceptions(error: any) { // any para recibir cualquier tipo de error
     //errores de la DB

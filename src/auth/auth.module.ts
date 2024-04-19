@@ -1,10 +1,11 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { UsersRepository } from '../users/users.repository';
 import { AuthRepository } from './auth.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../users/entities/user.entity';
+import { requiresAuth } from 'express-openid-connect';
 
 @Module({
   imports: [
@@ -13,4 +14,8 @@ import { User } from '../users/entities/user.entity';
   controllers: [AuthController],
   providers: [AuthService, AuthRepository, UsersRepository],
 })
-export class AuthModule {}
+export class AuthModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(requiresAuth()).forRoutes('auth/auth0') // rute protected by Auth0
+  }
+}

@@ -13,7 +13,6 @@ export class ConsultsService {
     private readonly embeddingCoseno: EmbeddingCosineService,
   ){}
 
-
   async consultProduct(consultUser: ConsultDto) {
 
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);

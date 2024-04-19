@@ -6,7 +6,6 @@ import { UpdateUserDto } from './dto/update.user.dto';
 @Injectable()
 export class UsersService {
 
-  //injecto la dependencia UsersRepository
   constructor(
     private readonly usersRepository: UsersRepository
     ) {}

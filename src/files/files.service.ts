@@ -17,18 +17,16 @@ export class FilesService {
 
     try {
       
-      const product = await this.productsRepository.findOneBy({ id: productId });      
-  
+      const product = await this.productsRepository.findOneBy({ id: productId });  
       if(!product) throw new NotFoundException(`El producto con id ${productId} no existe.`);
       
-      // envio la img al repository
       const uploadedImage = await this.fileUploadRepository.uploadImage(file);
             
       // update recibe 2 argumentos
       await this.productsRepository.update(product.id, {
           img_url: uploadedImage.secure_url,
       });
-      // obtengo el producto con la img actualizada
+      // get product updated
       const updatedProduct = await this.productsRepository.findOneBy({id: productId});
         
       return updatedProduct;

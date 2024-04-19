@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { LoginDataDto } from './dto/auth.login.dto';
 import { AuthRepository } from './auth.repository';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -28,7 +28,7 @@ export class AuthService {
   }
 
   async signIn(loginDataDto: LoginDataDto) {
-    // valido el user
+
     const user = await this.userRepository.findOneBy({ email: loginDataDto.email });
 
     if(!user) throw new UnauthorizedException(`Email o password incorrectos, verifique los datos e intentelo nuevamente.`);
@@ -40,10 +40,9 @@ export class AuthService {
       // cargo datos para el cuerpo del payload
       id: user.id,
       email: user.email,
-      isAdmin: user.isAdmin, // cargo el rol para verificarlo con el role.Guard
+      isAdmin: user.isAdmin, // rol to role.Guard verify
     };
-    // firmo el newToken
-    const token = this.jwtService.sign(userPayload);
+    const token = this.jwtService.sign(userPayload); //sign
     await this.userRepository.update({ id: user.id }, { last_login: new Date }); // update login user
     const loginOk = { message: `Bienvenido nuevamente ${user.name}.`, token }
     return loginOk;

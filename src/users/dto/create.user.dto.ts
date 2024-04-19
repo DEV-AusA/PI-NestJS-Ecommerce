@@ -46,6 +46,5 @@ export class CreateUserDto {
 
   readonly last_login?: Date;
   
-  // @IsDate()
   readonly created_at: Date;
 }

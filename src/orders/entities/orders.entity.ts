@@ -1,5 +1,5 @@
 import { User } from "../../users/entities/user.entity";
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { OrderDetails } from "./order-details.entity";
 
 @Entity({
@@ -15,7 +15,7 @@ export class Orders {
     
     @OneToOne(
         () => OrderDetails, orderDetails => orderDetails.order_id,
-        {cascade: true}
+        {cascade: true, eager: true}
     )
     order_details: OrderDetails;
     

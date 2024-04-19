@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Headers, HttpCode, Post, Req, UnauthorizedException, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post, Req, UseInterceptors } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDataDto } from './dto/auth.login.dto';
 import { CreateUserDto } from '../users/dto/create.user.dto';
@@ -10,8 +10,8 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('signup')
-  @UseInterceptors(DateAdderInterceptor) // interceptor filter DateAdd
-  @UseInterceptors(FilterPasswordInterceptor) // interceptor filter password
+  @UseInterceptors(DateAdderInterceptor)
+  @UseInterceptors(FilterPasswordInterceptor)
   signUn(@Body() createUserDto: CreateUserDto, @Req() request) {
  
     const registerOk = this.authService.signUp({...createUserDto, created_at: request.createdAt});    
@@ -25,4 +25,14 @@ export class AuthController {
     const messageLogin = this.authService.signIn(loginDataDto);    
     return messageLogin;    
   }
+
+  @Get('auth0')
+  signInAuth0(@Req() request: any) {
+    //recibo la data de registro de Auth0
+    console.log(request.oidc.user);
+    // function que retorna true del login de Auth0
+    console.log(request.oidc.isAuthenticated());    
+    return {message: "Regitro mediante Auth0 exitoso."}
+  }
+
 }
