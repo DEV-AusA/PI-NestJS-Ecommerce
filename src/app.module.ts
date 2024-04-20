@@ -15,6 +15,7 @@ import { Products } from './products/entities/products.entity';
 import { configJwt } from "../config/jwt.config";
 import { SeedModule } from './seed/seed.module';
 import { ConsultsModule } from './consults/consults.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { ConsultsModule } from './consults/consults.module';
     JwtModule.register( configJwt ), // jwt.config
     SeedModule, //sed module
     ConsultsModule, // consult module AI
+    AdminModule,    
   ],
   controllers: [],
   providers: [DataLoaderService], // preload data DataLoaderService
