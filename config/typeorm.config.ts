@@ -6,8 +6,8 @@ dotenvConfig({ path: '.development.env' });
 
 const config = {
     type: "postgres",
-    host: "postgresdb",
-    // host: process.env.DB_HOST,
+    // host: "postgresdb",
+    host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
@@ -17,7 +17,7 @@ const config = {
     // logging: true, // ["error"], <= solo muestre errores de la DB
     subscribers: [],
     entities: ['dist/**/*.entity{.ts,.js}'],
-    migrations: ['dist/migrations/*{.ts,.js}'],
+    migrations: ['dist/src/migrations/*{.ts,.js}'],
     timestamp: "timestamp-z",
 }
 // para el load: [typeormConfig] del module main

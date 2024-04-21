@@ -74,18 +74,3 @@ Para obtener un token JWT, inicia sesión utilizando el endpoint /auth/signin.
 ## Description
 
 Proyecto Backend de un ecommerce utilizando el framework [Nest](https://github.com/nestjs/nest).
-
-## DOCKER Build
-```
-docker-compose --env-file .development.env up --build
-```
-
-## DOCKER Run
-```
-docker-compose --env-file .development.env up
-```
-
-## Nota
-Por defecto, __docker-compose__ usa el archivo ```.env```, por lo que si tienen el archivo .env y lo configuran con sus variables de entorno de producción, bastaría con
-```
-docker-compose -f docker-compose.yaml up --build
