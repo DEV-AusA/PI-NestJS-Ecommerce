@@ -121,7 +121,7 @@ export class ProductsRepository {
       await queryRunner.commitTransaction();
 
       const productsListSaved = result.map((product) => product.name);
-      const messageNewProducts = { message: `Products creados correctamente: ${productsListSaved}`};
+      const messageNewProducts = { message: `Productos creados correctamente: ${productsListSaved}`};
       return messageNewProducts;   
       
     }
@@ -197,7 +197,7 @@ export class ProductsRepository {
       await queryRunner.commitTransaction();
 
       const productsListSaved = result.map((product) => product.name);
-      const messageNewProducts = { message: `Products creados correctamente: ${productsListSaved}`};
+      const messageNewProducts = { message: `Productos creados correctamente: ${productsListSaved}`};
       return messageNewProducts;    
       
     } catch (error) {

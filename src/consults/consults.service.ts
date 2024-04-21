@@ -26,7 +26,7 @@ export class ConsultsService {
       
       // buscando matchs de embeddings en DB
       const embeddingsMatch = await this.embeddingCoseno.calculateEmbeddingCosineDistance(questionEmbedding, "descriptionEmbedding");
-      const embeddingsResult = embeddingsMatch.map((product) => ({ resultado: product.description }) );
+      const embeddingsResult = embeddingsMatch.map((product) => ({ result: product.description }) );
 
       return embeddingsResult;
       

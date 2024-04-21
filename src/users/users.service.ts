@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UsersRepository } from './users.repository';
 import { CreateUserDto } from './dto/create.user.dto';
 import { UpdateUserDto } from './dto/update.user.dto';
+import { FindNameUserDto } from './dto/find.name.user.dto';
 
 @Injectable()
 export class UsersService {
@@ -20,7 +21,7 @@ export class UsersService {
       return user;
     }
 
-    getUserByName(name: string) {
+    getUserByName(name: FindNameUserDto) {
       const userByName = this.usersRepository.getUserByName(name);
       return userByName;
     }

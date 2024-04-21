@@ -47,7 +47,7 @@ export class OrdersRepository {
         const user = await this.userRepository.findOneBy({ id: userId });
         if(!user) throw new NotFoundException(`No existe un usuario con el id ${userId}`);
 
-        // registro order en DB y save
+        // newOrderDetails #1
         const order = await queryRunner.manager.create( Orders ,{
           user_id: user,
           date: new Date,
@@ -70,15 +70,15 @@ export class OrdersRepository {
 
         // stock?
         const productIds = products.map((product) => product.id); // extraigo ids
-        if(availableProducts.length !== productIds.length) throw new BadRequestException(`Algunos articulos estan fuera de stock.`)
-
+        if(availableProducts.length !== productIds.length) throw new BadRequestException(`Algunos articulos estan fuera de stock.`);
+        // newOrderDetails #2
         let totalPriceProducts = 0;
         for(const element of availableProducts) {
           element.stock--
           totalPriceProducts += +element.price;
           await queryRunner.manager.save(element);
         }
-
+        // newOrderDetails #3
         const onlyProducts = availableProducts.map((product) => {
           const { stock, ...productsDetails } = product;
           return productsDetails;

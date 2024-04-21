@@ -4,7 +4,9 @@ import { LoginDataDto } from './dto/auth.login.dto';
 import { CreateUserDto } from '../users/dto/create.user.dto';
 import { DateAdderInterceptor } from '../interceptors/dateAdder.interceptor';
 import { FilterPasswordInterceptor } from '../interceptors/filterPassword.interceptor';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -12,6 +14,8 @@ export class AuthController {
   @Post('signup')
   @UseInterceptors(DateAdderInterceptor)
   @UseInterceptors(FilterPasswordInterceptor)
+  @ApiResponse({ status: 201, description: 'Usuario creado correctamente' })
+  @ApiResponse({ status: 400, description: 'Ya existe un usuario registrado con ese email.' })
   signUn(@Body() createUserDto: CreateUserDto, @Req() request) {
  
     const registerOk = this.authService.signUp({...createUserDto, created_at: request.createdAt});    
@@ -20,6 +24,8 @@ export class AuthController {
 
   @HttpCode(200)
   @Post('signin')
+  @ApiResponse({ status: 200, description: 'Login exitoso' })
+  @ApiResponse({ status: 401, description: 'Email o password incorrectos, verifique los datos e intentelo nuevamente.`' })
   signIn(@Body() loginDataDto: LoginDataDto) {
 
     const messageLogin = this.authService.signIn(loginDataDto);    

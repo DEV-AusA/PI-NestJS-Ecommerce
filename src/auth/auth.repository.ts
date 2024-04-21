@@ -11,9 +11,7 @@ export class AuthRepository {
     ){}
 
     async signUp(createUserDto: CreateUserDto) {        
-        // bcrypt en action
-        const hashedPassword = await bcrypt.hash(createUserDto.password, 10); // 10 nivel de seguridad
-        // cargo user completo
+        const hashedPassword = await bcrypt.hash(createUserDto.password, 10); // 10 nivel hash
         const registerOk = await this.userRepository.createUser({ ...createUserDto, password: hashedPassword, last_login: new Date});
 
         // const registerOk = { message: `Usuario creado correctamente`, registerOk};        

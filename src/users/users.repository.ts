@@ -5,6 +5,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { User } from "./entities/user.entity";
 import { validate as isUUID } from "uuid";
+import { FindNameUserDto } from "./dto/find.name.user.dto";
 
 @Injectable()
 export class UsersRepository {
@@ -33,8 +34,8 @@ export class UsersRepository {
     return profileUser;
   }
 
-  async getUserByName(name: string) {
-    const userByName = await this.userRepository.findOneBy({ name });
+  async getUserByName(name: FindNameUserDto) {
+    const userByName = await this.userRepository.findOneBy({ name: name.name });
     if (!userByName) throw new NotFoundException(`El usuario con el nombre ${name} no existe.`);
     return userByName;
   }
