@@ -1,54 +1,101 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import * as productsData from "../helpers/preload-products.data.json";
 import { ProductItemDto } from '../products/dto/products.dto';
-import { DataSource } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { Products } from '../products/entities/products.entity';
 import { Categories } from '../categories/entities/category.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
-export class SeedService {
+export class SeedService implements OnModuleInit {
 
   constructor(
-    private readonly dataSource: DataSource,
+    @InjectRepository(Products)
+    private readonly productsRepository: Repository<Products>,
+    @InjectRepository(Categories)
+    private readonly categoriesRepository: Repository<Categories>,
+    private readonly entityManager: EntityManager,
   ) {}
 
-  async executeSeed() {
+  async onModuleInit() {
+    //preload on start
+    await this.preloadData();
+  }
+
+  private async executeSeedProducts() {
+
+    let newProduct: Products;
     
     const products = productsData as ProductItemDto[];
-    const queryRunner = this.dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
 
     try {
-      
-      for await (const product of products){
+
+      for await (const product of products) {
 
         const { category, ...restProduct } = product;
-        const existProduct = await queryRunner.manager.findOneBy(Products, { name: restProduct.name });
-        if(!existProduct) {
-          const newCategory = await queryRunner.manager.create(Categories, { name: category as string});
-          const newCategorySaved = await queryRunner.manager.save(newCategory);
-  
-          const newProduct = await queryRunner.manager.create(Products, {
+        
+        const productFinded = await this.productsRepository.findOneBy({ name: restProduct.name});
+
+        if(!productFinded) {
+          const newCategory = await this.categoriesRepository.create({name: category as string});
+          const newCategorySaved = await this.categoriesRepository.save(newCategory);
+
+          newProduct = this.productsRepository.create({
             ...restProduct,
             category: [newCategorySaved],
           });
-          await queryRunner.manager.save(newProduct);
-        }
 
+          await this.productsRepository.save(newProduct);
+        }
+      }      
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async preloadData() {
+
+    const products = productsData as ProductItemDto[];
+    let busyProducts: string[] = [];
+
+    try {
+
+      await this.executeSeedProducts();
+
+      for await (const product of products) {
+
+        const productFinded = await this.productsRepository.findOneBy({name: product.name});
+
+        if(productFinded) {
+          const productWithOrder = await this.entityManager.createQueryBuilder()
+          .select('order_details_products.productsId', 'productsId')
+          .from('order_details_products', 'order_details_products')
+          .where('order_details_products.productsId = :id', { id: productFinded.id })
+          .getRawOne();        
+
+          !productWithOrder
+          ? await this.productsRepository.update(productFinded.id, { stock: product.stock })
+          : busyProducts.push(productFinded.name);
+        }    
       }
 
-      await queryRunner.commitTransaction();
-
-      const seedLoaded = { message: 'Seed de productos cargado Correctamente' };
-      return seedLoaded;
-      
+      if (busyProducts.length > 0) {
+        
+        Logger.log(`Seed de productos cargado correctamente, estos articulos no se pueden reinicializar porque estan relacionados a una orden: ${busyProducts}`, 'PreloadData-Ecommerce');        
+        const message = { 
+          message: 'Seed de productos cargado correctamente, estos articulos no se pueden reinicializar porque estan relacionados a una orden:',
+          busyProducts
+        }; 
+        return message;
+      }
+      else{
+        Logger.log('Seed de productos cargado correctamente', 'PreloadData-Ecommerce');
+        const message = {message: 'Seed de productos cargado correctamente'};
+        return message;
+      }      
     }
     catch (error) {
-      await queryRunner.rollbackTransaction()
-    }
-    finally{
-      await queryRunner.release()
+      throw error;      
     }
   }
 

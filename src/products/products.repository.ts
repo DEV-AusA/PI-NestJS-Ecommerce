@@ -127,7 +127,7 @@ export class ProductsRepository {
     }
     catch (error) {
       await queryRunner.rollbackTransaction();
-      throw error
+      this.handleDBExceptions(error)
     }
     finally{
       await queryRunner.release();
@@ -140,7 +140,7 @@ export class ProductsRepository {
     const modelEmbedding = genAI.getGenerativeModel({ model: "embedding-001"});
 
     let newProduct: Products;
-    const queryRunner: QueryRunner = this.dataSource.createQueryRunner();
+    const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
     let result = [];
@@ -202,8 +202,8 @@ export class ProductsRepository {
       
     } catch (error) {
 
-      await queryRunner.rollbackTransaction();
-      throw error
+      await queryRunner.rollbackTransaction();      
+      this.handleDBExceptions(error);
     }
 
     finally{
@@ -215,7 +215,7 @@ export class ProductsRepository {
     
     await this.getProductById(id);
 
-    const { category, ...restToUpdate} = updateProductDto;
+    const { category, ...restToUpdate} = updateProductDto;    
 
     const product = await this.productsRepository.preload({
       id,
@@ -232,12 +232,21 @@ export class ProductsRepository {
       if (Array.isArray(category)) {
         //borra las que existen en la DB
         await queryRunner.manager.delete(Categories, { products: { id } });
-        
-        product.category = category.map((category) => this.categoriesRepository.create({ name: category}))        
+
+        const newCategories = await Promise.all(category.map(async (category) => {
+          const newCategory = this.categoriesRepository.create({ name: category});
+          const newCategorySaved = await this.categoriesRepository.save(newCategory);
+          return newCategorySaved;
+        }));   
+
+        product.category = newCategories;
       }
       else {
+        
         await queryRunner.manager.delete( Categories, { products: { id } });
-        product.category = [ this.categoriesRepository.create({ name: category }) ] 
+        const newCategory = await this.categoriesRepository.create({ name: category });
+        const newCategorySaved = await this.categoriesRepository.save(newCategory);
+        product.category = [newCategorySaved];
       }
       await queryRunner.manager.save(product)
       await queryRunner.commitTransaction()
@@ -266,20 +275,28 @@ export class ProductsRepository {
       const messageDeleteProduct = { message: `El producto con id ${id} fue borrado con exito.` }
       return messageDeleteProduct;
       
-    } catch (error) {
-      this.handleDBExceptions(error)
+    } catch (error) {      
+      this.handleDBExceptions(error);
       
     }
   }
   // handle de errores Products friendly
-  private handleDBExceptions(error: any) { // any para recibir cualquier tipo de error
+  private handleDBExceptions(error: any) { // any errors
     //errores de la DB
-    if (error.code === '23505' ) {
-      throw new BadRequestException(error.detail);
+    if (error.code === '23505') {
+      // duplicated
+      this.logger.error(error);
+      throw new BadRequestException(`Ya existe un producto con ese nombre en la tabla '${error.table}' en la base de datos.`);
+    }
+    else if (error.code === '23503') {
+      // relations FK
+      this.logger.error(error);
+      throw new BadRequestException(`No se puede eliminar porque todavia mantiene una relacion con la tabla '${error.table}' en la base de datos.`);
     }
 
     this.logger.error(error);
-    throw new InternalServerErrorException(`Error inesperado verifique los losgs del Server`)
+    throw error;
+    // throw new InternalServerErrorException(`Error inesperado verifique los logs del Server.`);
   }
 
 }

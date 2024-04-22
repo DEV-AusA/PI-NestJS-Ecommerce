@@ -1543,7 +1543,7 @@
 			0.016013168
 		],
 		"price": 149.99,
-		"stock": 20,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/sony-wh-ch710n.jpg",
 		"category": "audio"
 	},
@@ -3091,7 +3091,7 @@
 			-0.0050363713
 		],
 		"price": 2999.99,
-		"stock": 8,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/asus-rog-strix-scar-17.jpg",
 		"category": "laptop"
 	},
@@ -4639,7 +4639,7 @@
 			0.033078156
 		],
 		"price": 199.99,
-		"stock": 25,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/samsung-galaxy-buds-pro.jpg",
 		"category": "audio"
 	},
@@ -7735,7 +7735,7 @@
 			-0.027513767
 		],
 		"price": 229.99,
-		"stock": 15,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/fitbit-versa-3.jpg",
 		"category": "smartwatch"
 	},
@@ -9283,7 +9283,7 @@
 			0.018902432
 		],
 		"price": 49.99,
-		"stock": 30,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/anker-powercore-20000.jpg",
 		"category": "accessory"
 	},
@@ -12379,7 +12379,7 @@
 			-0.007692553
 		],
 		"price": 969.99,
-		"stock": 20,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/oneplus-9-pro.jpg",
 		"category": "smartphone"
 	},
@@ -13927,7 +13927,7 @@
 			0.0269242
 		],
 		"price": 329.99,
-		"stock": 15,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/bose-quietcomfort-45.jpg",
 		"category": "audio"
 	},
@@ -15475,7 +15475,7 @@
 			-0.0046180217
 		],
 		"price": 349.99,
-		"stock": 8,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/tp-link-deco-x60.jpg",
 		"category": "networking"
 	},
@@ -17023,7 +17023,7 @@
 			0.0091701215
 		],
 		"price": 499.99,
-		"stock": 15,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/xbox-series-x.jpg",
 		"category": "gaming"
 	},
@@ -18571,7 +18571,7 @@
 			-0.02930162
 		],
 		"price": 1199.99,
-		"stock": 20,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/samsung-galaxy-s21-ultra.jpg",
 		"category": "smartphone"
 	},
@@ -21667,7 +21667,7 @@
 			-0.015956584
 		],
 		"price": 599.99,
-		"stock": 25,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/apple-ipad-air.jpg",
 		"category": "tablet"
 	},
@@ -23215,7 +23215,7 @@
 			0.03443105
 		],
 		"price": 149.99,
-		"stock": 20,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/logitech-g-pro-x.jpg",
 		"category": "peripherals"
 	},
@@ -24763,7 +24763,7 @@
 			-0.022154154
 		],
 		"price": 799.99,
-		"stock": 15,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/dji-mavic-air-2.jpg",
 		"category": "drone"
 	},
@@ -26311,7 +26311,7 @@
 			0.018356074
 		],
 		"price": 279.99,
-		"stock": 18,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/amazon-kindle-oasis.jpg",
 		"category": "e-reader"
 	},
@@ -27859,7 +27859,7 @@
 			0.02379303
 		],
 		"price": 99.99,
-		"stock": 30,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/corsair-hs70-pro.jpg",
 		"category": "audio"
 	},
@@ -29407,7 +29407,7 @@
 			0.034385275
 		],
 		"price": 99.99,
-		"stock": 25,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/google-nest-hub.jpg",
 		"category": "smart-home"
 	},
@@ -30955,7 +30955,7 @@
 			0.039379247
 		],
 		"price": 179.99,
-		"stock": 12,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/microsoft-xbox-elite-controller.jpg",
 		"category": "gaming"
 	},
@@ -32503,7 +32503,7 @@
 			0.02156866
 		],
 		"price": 299.99,
-		"stock": 15,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/sony-playstation-vr.jpg",
 		"category": "gaming"
 	},
@@ -35599,7 +35599,7 @@
 			0.025803946
 		],
 		"price": 69.99,
-		"stock": 20,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/razer-deathadder-v2.jpg",
 		"category": "peripherals"
 	},
@@ -37147,7 +37147,7 @@
 			0.007118726
 		],
 		"price": 49.99,
-		"stock": 30,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/amazon-fire-tv-stick-4k.jpg",
 		"category": "smart-home"
 	},
@@ -38695,7 +38695,7 @@
 			0.031712897
 		],
 		"price": 179.99,
-		"stock": 25,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/jbl-charge-5.jpg",
 		"category": "audio"
 	},
@@ -40243,7 +40243,7 @@
 			-0.049199168
 		],
 		"price": 699.99,
-		"stock": 15,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/samsung-odyssey-g7.jpg",
 		"category": "monitor"
 	},
@@ -41791,7 +41791,7 @@
 			-0.0016478323
 		],
 		"price": 399.99,
-		"stock": 20,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/apple-watch-series-7.jpg",
 		"category": "smartwatch"
 	},
@@ -43339,7 +43339,7 @@
 			0.010071991
 		],
 		"price": 79.99,
-		"stock": 25,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/logitech-c920-hd-pro.jpg",
 		"category": "peripherals"
 	},
@@ -46435,7 +46435,7 @@
 			0.024922786
 		],
 		"price": 129.99,
-		"stock": 15,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/anker-soundcore-liberty-air-2-pro.jpg",
 		"category": "audio"
 	},
@@ -47983,7 +47983,7 @@
 			-0.012051802
 		],
 		"price": 449.99,
-		"stock": 8,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/gopro-hero9-black.jpg",
 		"category": "camera"
 	},
@@ -49531,7 +49531,7 @@
 			0.03996198
 		],
 		"price": 49.99,
-		"stock": 30,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/amazon-echo-dot.jpg",
 		"category": "smart-home"
 	},
@@ -51079,7 +51079,7 @@
 			0.007171252
 		],
 		"price": 799.99,
-		"stock": 12,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/microsoft-surface-pro-7.jpg",
 		"category": "tablet"
 	},
@@ -52627,7 +52627,7 @@
 			0.017813534
 		],
 		"price": 499.99,
-		"stock": 15,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/sony-playstation-5.jpg",
 		"category": "gaming"
 	},
@@ -55723,7 +55723,7 @@
 			0.019585192
 		],
 		"price": 99.99,
-		"stock": 25,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/logitech-mx-master-3.jpg",
 		"category": "peripherals"
 	},
@@ -57271,7 +57271,7 @@
 			0.035067257
 		],
 		"price": 249.99,
-		"stock": 20,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/apple-airpods-pro.jpg",
 		"category": "audio"
 	},
@@ -58819,7 +58819,7 @@
 			0.033473846
 		],
 		"price": 35.00,
-		"stock": 50,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/raspberry-pi-4.jpg",
 		"category": "mini-computer"
 	},
@@ -60367,7 +60367,7 @@
 			0.02353789
 		],
 		"price": 3899.99,
-		"stock": 7,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/canon-eos-r5.jpg",
 		"category": "camera"
 	},
@@ -63463,7 +63463,7 @@
 			0.02479721
 		],
 		"price": 49.99,
-		"stock": 30,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/xiaomi-mi-band-6.jpg",
 		"category": "wearable"
 	},
@@ -65011,7 +65011,7 @@
 			0.041807495
 		],
 		"price": 1899.99,
-		"stock": 15,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/dell-xps-15.jpg",
 		"category": "laptop"
 	},
@@ -66559,7 +66559,7 @@
 			0.0062566553
 		],
 		"price": 2499.99,
-		"stock": 8,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/lg-oled-c1.jpg",
 		"category": "television"
 	},
@@ -68107,7 +68107,7 @@
 			0.024678256
 		],
 		"price": 79.99,
-		"stock": 20,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/razer-naga-x.jpg",
 		"category": "peripherals"
 	},
@@ -69655,7 +69655,7 @@
 			-0.0028284525
 		],
 		"price": 349.99,
-		"stock": 25,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/nintendo-switch-oled.jpg",
 		"category": "gaming"
 	},
@@ -71203,7 +71203,7 @@
 			0.017003605
 		],
 		"price": 279.99,
-		"stock": 20,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/sony-wf-1000xm4.jpg",
 		"category": "audio"
 	},
@@ -72751,7 +72751,7 @@
 			0.012206778
 		],
 		"price": 259.99,
-		"stock": 15,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/corsair-virtuoso-rgb-wireless-xt.jpg",
 		"category": "audio"
 	},
@@ -74299,7 +74299,7 @@
 			0.010986909
 		],
 		"price": 29.99,
-		"stock": 50,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/apple-airtag.jpg",
 		"category": "accessory"
 	},
@@ -75847,7 +75847,7 @@
 			0.01126797
 		],
 		"price": 129.99,
-		"stock": 25,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/logitech-g733-lightspeed.jpg",
 		"category": "audio"
 	},
@@ -77395,7 +77395,7 @@
 			-0.048593592
 		],
 		"price": 1499.99,
-		"stock": 15,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/samsung-odyssey-g9.jpg",
 		"category": "monitor"
 	},
@@ -78943,7 +78943,7 @@
 			0.010680934
 		],
 		"price": 999.99,
-		"stock": 20,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/apple-macbook-air-m1.jpg",
 		"category": "laptop"
 	},
@@ -80491,7 +80491,7 @@
 			0.015111936
 		],
 		"price": 349.99,
-		"stock": 25,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/sony-wh-1000xm4.jpg",
 		"category": "audio"
 	},
@@ -82039,7 +82039,7 @@
 			-0.030667894
 		],
 		"price": 699.99,
-		"stock": 12,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/asus-rog-swift-pg279q.jpg",
 		"category": "monitor"
 	},
@@ -83587,7 +83587,7 @@
 			0.030421132
 		],
 		"price": 199.99,
-		"stock": 20,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/corsair-k95-rgb-platinum-xt.jpg",
 		"category": "peripherals"
 	},
@@ -85135,7 +85135,7 @@
 			-0.017360184
 		],
 		"price": 3499.99,
-		"stock": 8,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/sony-bravia-a90j.jpg",
 		"category": "television"
 	},
@@ -86683,7 +86683,7 @@
 			0.0045344057
 		],
 		"price": 169.99,
-		"stock": 15,
+		"stock": 10,
 		"imgUrl": "https://cdn.example.com/img/logitech-streamcam.jpg",
 		"category": "peripherals"
 	}

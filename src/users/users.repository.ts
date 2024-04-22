@@ -94,12 +94,20 @@ export class UsersRepository {
   // handle de errores Users friendly
   private handleDBExceptions(error: any) {
     //errores de la DB
-    if (error.code === '23505' ) {
-      throw new BadRequestException(error.detail);
+    if (error.code === '23505') {
+      // duplicated
+      this.logger.error(error);
+      throw new BadRequestException(`Ya existe un producto con ese nombre en la tabla '${error.table}' en la base de datos.`);
+    }
+    else if (error.code === '23503') {
+      // relations FK
+      this.logger.error(error);
+      throw new BadRequestException(`No se puede eliminar porque todavia mantiene una relacion con la tabla '${error.table}' en la base de datos.`);
     }
 
     this.logger.error(error);
-    throw new InternalServerErrorException(`Error inesperado verifique los logs del Server`)
+    throw error;
+    // throw new InternalServerErrorException(`Error inesperado verifique los logs del Server.`);
   }
 
 }

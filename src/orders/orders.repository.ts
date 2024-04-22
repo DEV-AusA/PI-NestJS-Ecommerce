@@ -97,7 +97,7 @@ export class OrdersRepository {
         const lastOrder = await this.ordersRepository.findOneBy({ id: savedOrder.id });
         const { id, price } = newOrderDetailsSaved
 
-        const result = { id_order: lastOrder.id , order_details: {id, price}};
+        const result = { id_order: lastOrder.id , order_details: {id, price: +price.toFixed(2)}};
         return result;
 
       }        

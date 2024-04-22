@@ -4,7 +4,7 @@ import { AuthGuard } from '../guards/auth.guard';
 import { RolesGuard } from '../guards/roles.guard';
 import { Roles } from '../decorators/roles.decorator';
 import { Role } from '../helpers/roles.enum';
-import { ApiBearerAuth, ApiExcludeController, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiExcludeController, ApiResponse } from '@nestjs/swagger';
 
 @ApiExcludeController()
 @Controller('seed')
@@ -17,8 +17,8 @@ export class SeedController {
   @UseGuards(AuthGuard, RolesGuard)
   @ApiResponse({ status: 200, description: 'Seed de productos cargado Correctamente.' })
   @ApiResponse({ status: 401, description: 'Token invalido, no autorizado.' })
-  exejuteSeed() {
-    return this.seedService.executeSeed();
+  exejutePreloadData() {
+    return this.seedService.preloadData();
   }
 
 }
