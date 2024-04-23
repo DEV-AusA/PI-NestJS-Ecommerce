@@ -230,26 +230,28 @@ export class ProductsRepository {
     await queryRunner.startTransaction();
 
     try {
-
-      if (Array.isArray(category)) {
-        //borra las que existen en la DB
-        await queryRunner.manager.delete(Categories, { products: { id } });
-
-        const newCategories = await Promise.all(category.map(async (category) => {
-          const newCategory = this.categoriesRepository.create({ name: category});
+      if(category) {
+        if (Array.isArray(category)) {
+          //borra las que existen en la DB
+          await queryRunner.manager.delete(Categories, { products: { id } });
+  
+          const newCategories = await Promise.all(category.map(async (category) => {
+            const newCategory = this.categoriesRepository.create({ name: category});
+            const newCategorySaved = await this.categoriesRepository.save(newCategory);
+            return newCategorySaved;
+          }));   
+  
+          product.category = newCategories;
+        }
+        else {
+          
+          await queryRunner.manager.delete( Categories, { products: { id } });
+          const newCategory = await this.categoriesRepository.create({ name: category });
           const newCategorySaved = await this.categoriesRepository.save(newCategory);
-          return newCategorySaved;
-        }));   
+          product.category = [newCategorySaved];
+        }
+      }
 
-        product.category = newCategories;
-      }
-      else {
-        
-        await queryRunner.manager.delete( Categories, { products: { id } });
-        const newCategory = await this.categoriesRepository.create({ name: category });
-        const newCategorySaved = await this.categoriesRepository.save(newCategory);
-        product.category = [newCategorySaved];
-      }
       await queryRunner.manager.save(product)
       await queryRunner.commitTransaction()
 
