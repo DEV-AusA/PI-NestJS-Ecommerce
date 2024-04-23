@@ -1,10 +1,10 @@
-import { BadRequestException, Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { ProductItemDto } from './dto/products.dto';
 import { UpdateProductDto } from './dto/update.product.dto';
 import { PaginationProductDto } from './dto/pagination.product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Products } from './entities/products.entity';
-import { DataSource, QueryRunner, Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { Categories } from '../categories/entities/category.entity';
 import { validate as isUUID } from "uuid";
 import { GoogleGenerativeAI } from '@google/generative-ai';
@@ -25,34 +25,36 @@ export class ProductsRepository {
     private readonly dataSource: DataSource,
   ){}
 
-   async getProducts(paginationProductDto: PaginationProductDto) {
-    // valores por defecto
-    const { page = 1, limit = 5 } = paginationProductDto;
-
-    // calculo el indice de inicio y fin
+  async getProducts(paginationProductDto: PaginationProductDto) {
+    const { page = 1, limit = 5 } = paginationProductDto; // valores por defecto
     const startIndex = (page - 1) * limit;
-    const endIndex = startIndex + limit;
-
-    const products = await this.productsRepository.find();
-    const productosPaginados = products.slice(startIndex, endIndex);
-
-    return {page , pagination: productosPaginados};    
-    }
   
-    async getProductByName(name: string) {
-      const productByName = await this.productsRepository.findOneBy({name})
-      if(!productByName) throw new NotFoundException(`No se encontro el producto con el nombre '${name}' intentelo nuevamente.`)
-      return productByName;
-    }
+    const [products, totalNumProducts] = await this.productsRepository.findAndCount({
+      take: limit,
+      skip: startIndex,
+    });
+  
+    return {
+      page,
+      totalNumProducts,
+      pagination: products,
+    };
+  }
+  
+  async getProductByName(name: string) {
+    const productByName = await this.productsRepository.findOneBy({name})
+    if(!productByName) throw new NotFoundException(`No se encontro el producto con el nombre '${name}' intentelo nuevamente.`)
+    return productByName;
+  }
+  
+  async getProductById(id: string) {
 
-   async getProductById(id: string) {
+   if (!isUUID(id)) throw new BadRequestException(`El id del producto no contiene el formato correcto de UUID`);
+     
+   const product = await this.productsRepository.findOneBy({ id });     
+   if (!product) throw new NotFoundException(`El producto con id ${id} no existe.`);
 
-    if (!isUUID(id)) throw new BadRequestException(`El id del producto no contiene el formato correcto de UUID`);
-      
-    const product = await this.productsRepository.findOneBy({ id });     
-    if (!product) throw new NotFoundException(`El producto con id ${id} no existe.`);
-
-    return product;
+   return product;
   }
 
   async createMultipleProducts(multipleProductsDto: MultipleProductsDto) {
