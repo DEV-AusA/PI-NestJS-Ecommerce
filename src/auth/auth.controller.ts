@@ -1,10 +1,11 @@
-import { Body, Controller, Get, HttpCode, Post, Req, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post, Req, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDataDto } from './dto/auth.login.dto';
 import { CreateUserDto } from '../users/dto/create.user.dto';
 import { DateAdderInterceptor } from '../interceptors/dateAdder.interceptor';
 import { FilterPasswordInterceptor } from '../interceptors/filterPassword.interceptor';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { GoogleOAuthGuard } from '../guards/GoogleOAuth.guard';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -41,14 +42,21 @@ export class AuthController {
     return {message: "Regitro mediante Auth0 exitoso."}
   }
 
+  @Get('google')
+  signInRedirect(){
+    return `<a href="/auth/google/signin"> Autenticar con google </a>`
+  }
+
   @Get('google/signin')
+  @UseGuards(GoogleOAuthGuard)
   signInGoogle(@Req() request: any){
     console.log(request);
     
     return {message: `Google Authenticacion`};
   }
 
-  @Post('google/redirect')
+  @Get('google/redirect')
+  @UseGuards(GoogleOAuthGuard)
   signInGoogleRedirect(@Req() request: any){
     console.log(request);
     
