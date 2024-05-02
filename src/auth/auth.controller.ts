@@ -41,4 +41,18 @@ export class AuthController {
     return {message: "Regitro mediante Auth0 exitoso."}
   }
 
+  @Get('google/signin')
+  signInGoogle(@Req() request: any){
+    console.log(request);
+    
+    return {message: `Google Authenticacion`};
+  }
+
+  @Post('google/redirect')
+  signInGoogleRedirect(@Req() request: any){
+    console.log(request);
+    
+    return {message: `Bienvenido Usuario`};
+  }
+
 }

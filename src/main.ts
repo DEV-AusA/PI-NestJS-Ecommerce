@@ -27,7 +27,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   app.use(loggerGlobal); // midd-loginLog global
-  app.use(auth(configAuth0)); // auth0
+  // app.use(auth(configAuth0)); // auth0
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true, // validar DTO

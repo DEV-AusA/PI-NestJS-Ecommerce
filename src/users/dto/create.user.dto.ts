@@ -22,6 +22,10 @@ export class CreateUserDto {
   @IsString()
   @MinLength(3)
   @MaxLength(50)
+  @Matches(
+    /^[a-zA-Z0-9]+$/,
+    { message: `El nombre no debe contener caracteres especiales.` }
+  )
   readonly name: string;
 
   /**
