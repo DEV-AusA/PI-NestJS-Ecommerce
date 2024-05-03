@@ -1,5 +1,5 @@
 import { ApiHideProperty } from '@nestjs/swagger';
-import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, IsUrl, MinLength } from 'class-validator';
+import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, IsUrl, Matches, MinLength } from 'class-validator';
 
 export class ProductItemDto {
 
@@ -11,6 +11,10 @@ export class ProductItemDto {
   @IsNotEmpty()
   @IsString()
   @MinLength(3)
+  @Matches(
+    /^[a-zA-Z0-9]+$/,
+    { message: `El nombre no debe contener caracteres especiales.` }
+  )
   readonly name: string;
 
   @ApiHideProperty()
