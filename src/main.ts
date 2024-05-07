@@ -11,17 +11,19 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const swaggerConfig = new DocumentBuilder()
-  .setTitle('Ecommerce API')
-  .setDescription(`
+    .setTitle('Ecommerce API')
+    .setDescription(
+      `
   ¡Bienvenido a la API de ecommerce! Esta API está diseñada para proporcionar acceso a una variedad de recursos relacionados con la gestión de productos, usuarios y ordenes en nuestra plataforma de ecommerce.
   Esta desarrollada con NestJS y se utiliza como demostración para el Modulo 4 del programa de especialización en Backend de la carrera de Desarrollo Fullstack en Henry.
   La API de este ecommerce requiere autenticación para ciertas operaciones.
   Utilizamos JSON Web Tokens (JWT) para autenticar a los usuarios.
   Para obtener un token JWT, inicia sesión utilizando el endpoint /auth/signin.
-  `,)
-  .setVersion('1.0')
-  .addBearerAuth()
-  .build();
+  `,
+    )
+    .setVersion('1.0')
+    .addBearerAuth()
+    .build();
 
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api', app, document);
@@ -32,7 +34,7 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true, // validar DTO
       forbidNonWhitelisted: true,
-    })
+    }),
   );
 
   // preload data

@@ -1,8 +1,15 @@
 import { ApiHideProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsNumber, IsString, Matches, MaxLength, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  Matches,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 
 export class CreateUserDto {
-
   /**
    * Correo electrónico del usuario.
    * @description Debe ser una cadena no vacía con formato de email válido.
@@ -22,10 +29,9 @@ export class CreateUserDto {
   @IsString()
   @MinLength(3)
   @MaxLength(50)
-  @Matches(
-    /^[a-zA-Z0-9]+$/,
-    { message: `El nombre no debe contener caracteres especiales.` }
-  )
+  @Matches(/^[a-zA-Z0-9]+$/, {
+    message: `El nombre no debe contener caracteres especiales.`,
+  })
   readonly name: string;
 
   /**
@@ -37,10 +43,9 @@ export class CreateUserDto {
   @IsString()
   @MinLength(8)
   @MaxLength(15)
-  @Matches(
-    /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*\W)(?!.*\s).{8,15}$/,
-    { message: `La contraseña debe tener minimo 8 digitos, una letra en mayuscula, una minuscula , un numero y un caracter especial.`}
-  )
+  @Matches(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*\W)(?!.*\s).{8,15}$/, {
+    message: `La contraseña debe tener minimo 8 digitos, una letra en mayuscula, una minuscula , un numero y un caracter especial.`,
+  })
   readonly password: string;
 
   /**
@@ -62,7 +67,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsNumber()
   readonly phone: number;
-  
+
   /**
    * País del usuario (opcional).
    * @description Debe ser una cadena opcional con longitud entre 3 y 20 caracteres.
@@ -73,7 +78,7 @@ export class CreateUserDto {
   @MinLength(3)
   @MaxLength(20)
   readonly country?: string;
-  
+
   /**
    * Ciudad del usuario (opcional).
    * @description Debe ser una cadena opcional con longitud entre 3 y 20 caracteres.
@@ -87,6 +92,6 @@ export class CreateUserDto {
 
   @ApiHideProperty()
   readonly last_login?: Date;
-  @ApiHideProperty()  
+  @ApiHideProperty()
   readonly created_at: Date;
 }

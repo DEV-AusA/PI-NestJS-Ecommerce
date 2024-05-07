@@ -24,5 +24,4 @@ export class AdminController {
   deleteAdminUser(@Body() deleteAdminUser: AdminDto) {
     return this.adminService.deleteAdminUser(deleteAdminUser);
   }
-
 }

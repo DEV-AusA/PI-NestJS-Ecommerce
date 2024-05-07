@@ -12,27 +12,33 @@ import { User } from './users/entities/user.entity';
 import { FilesModule } from './files/files.module';
 import { JwtModule } from '@nestjs/jwt';
 import { Products } from './products/entities/products.entity';
-import { configJwt } from "../config/jwt.config";
+import { configJwt } from '../config/jwt.config';
 import { SeedModule } from './seed/seed.module';
 import { ConsultsModule } from './consults/consults.module';
 import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
-    UsersModule, ProductsModule, AuthModule, CategoriesModule, OrdersModule, FilesModule,
+    UsersModule,
+    ProductsModule,
+    AuthModule,
+    CategoriesModule,
+    OrdersModule,
+    FilesModule,
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [typeormConfig]
+      load: [typeormConfig],
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => configService.get('typeorm'),
+      useFactory: (configService: ConfigService) =>
+        configService.get('typeorm'),
     }),
     TypeOrmModule.forFeature([User, Products]), // preload data categories
-    JwtModule.register( configJwt ), // jwt.config
+    JwtModule.register(configJwt), // jwt.config
     SeedModule, //sed module
     ConsultsModule, // consult module AI
-    AdminModule,    
+    AdminModule,
   ],
   controllers: [],
   providers: [DataLoaderService], // preload data DataLoaderService

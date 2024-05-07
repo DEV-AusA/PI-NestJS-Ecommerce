@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, ParseUUIDPipe, Param, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  ParseUUIDPipe,
+  Param,
+  UseGuards,
+} from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { AuthGuard } from '../guards/auth.guard';
@@ -22,12 +30,20 @@ export class OrdersController {
   @ApiBearerAuth()
   @Post()
   @UseGuards(AuthGuard)
-  @ApiResponse({ status: 201, description: 'Orden de compra creada con exito.' })
-  @ApiResponse({ status: 400, description: 'UUID incorrecto o Algunos articulos estan fuera de stock.' })
+  @ApiResponse({
+    status: 201,
+    description: 'Orden de compra creada con exito.',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'UUID incorrecto o Algunos articulos estan fuera de stock.',
+  })
   @ApiResponse({ status: 401, description: 'Token invalido, no autorizado.' })
-  @ApiResponse({ status: 404, description: 'No existe un usuario con el id o no existe el producto.' })
+  @ApiResponse({
+    status: 404,
+    description: 'No existe un usuario con el id o no existe el producto.',
+  })
   addOrder(@Body() createOrderDto: CreateOrderDto) {
     return this.ordersService.addOrder(createOrderDto);
   }
-
 }

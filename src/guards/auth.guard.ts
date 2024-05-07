@@ -1,20 +1,27 @@
-import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { JwtService } from "@nestjs/jwt";
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
+  constructor(private jwtService: JwtService) {}
 
-  constructor(
-    private jwtService: JwtService,
-  ) {}
-
-  canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
+  canActivate(
+    context: ExecutionContext,
+  ): boolean | Promise<boolean> | Observable<boolean> {
     // obtengo request del context
     const request = context.switchToHttp().getRequest();
     const isToken = request.headers['authorization'];
-    if(!isToken) throw new UnauthorizedException('Necesitas loguearte para acceder a esta seccion.');
-    
+    if (!isToken)
+      throw new UnauthorizedException(
+        'Necesitas loguearte para acceder a esta seccion.',
+      );
+
     const token = request.headers['authorization'].split(' ')[1] ?? '';
 
     try {
@@ -23,15 +30,13 @@ export class AuthGuard implements CanActivate {
       payload.iat = new Date(payload.iat * 1000);
       payload.exp = new Date(payload.exp * 1000);
       payload.isAdmin
-      ? payload.roles = [ 'admin' ]
-      : payload.roles = [ 'user' ];
+        ? (payload.roles = ['admin'])
+        : (payload.roles = ['user']);
       request.user = payload; // cargo el payload como prop user de la request
-            
-      return true;
 
-    }
-    catch (error) {
-      throw new UnauthorizedException(`Token invalido`)
+      return true;
+    } catch (error) {
+      throw new UnauthorizedException(`Token invalido`);
     }
   }
 }

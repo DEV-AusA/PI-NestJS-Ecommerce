@@ -7,7 +7,6 @@ import { MultipleProductsDto } from './dto/products.multiple.dto';
 
 @Injectable()
 export class ProductsService {
-  
   constructor(private readonly productsRepository: ProductsRepository) {}
 
   getProducts(paginationProductDto: PaginationProductDto) {
@@ -28,14 +27,18 @@ export class ProductsService {
     const messageNewProduct = this.productsRepository.createProduct(productDto);
     return messageNewProduct;
   }
-  
+
   createMultipleProducts(multipleProductsDto: MultipleProductsDto) {
-    const messageNewProduct = this.productsRepository.createMultipleProducts(multipleProductsDto);
+    const messageNewProduct =
+      this.productsRepository.createMultipleProducts(multipleProductsDto);
     return messageNewProduct;
   }
 
-  updateProduct(id:string, updateProductDto: UpdateProductDto){
-    const messageUpdateProduct = this.productsRepository.updateProduct(id, updateProductDto);
+  updateProduct(id: string, updateProductDto: UpdateProductDto) {
+    const messageUpdateProduct = this.productsRepository.updateProduct(
+      id,
+      updateProductDto,
+    );
     return messageUpdateProduct;
   }
 

@@ -7,8 +7,7 @@ import { Repository } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';
 
 describe('AuthRepository', () => {
-
-  let authRepository: AuthRepository;  
+  let authRepository: AuthRepository;
   let mockUserRepositoryTypeOrm: Repository<User>;
   let mockUserRepository: Partial<UsersRepository>;
 
@@ -18,10 +17,10 @@ describe('AuthRepository', () => {
         return Promise.resolve({
           ...user,
           isAdmin: false,
-          id: '492ad95a-33a0-43a2-9049-7ed38e6a18e0'
-        } as User)
-      },      
-    }    
+          id: '492ad95a-33a0-43a2-9049-7ed38e6a18e0',
+        } as User);
+      },
+    };
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         AuthRepository,
@@ -38,22 +37,24 @@ describe('AuthRepository', () => {
     }).compile();
 
     authRepository = module.get<AuthRepository>(AuthRepository);
-    mockUserRepositoryTypeOrm = module.get<Repository<User>>(getRepositoryToken(User));
+    mockUserRepositoryTypeOrm = module.get<Repository<User>>(
+      getRepositoryToken(User),
+    );
   });
 
   const mockUser: Partial<User> = {
     id: '492ad95a-33a0-43a2-9049-7ed38e6a18e0',
-    email: "usuario@gmail.com",
-    name: "Usuario Nuevo",
-    password: "Hol@1234",
-    address: "9 de Julio",
+    email: 'usuario@gmail.com',
+    name: 'Usuario Nuevo',
+    password: 'Hol@1234',
+    address: '9 de Julio',
     phone: 1122334455,
-    country: "Peru",
-    city: "Lima",
-    created_at: new Date,
-    last_login: new Date,    
+    country: 'Peru',
+    city: 'Lima',
+    created_at: new Date(),
+    last_login: new Date(),
     isAdmin: false,
-  }
+  };
 
   // TODO *** REFACTORIZAR EL CODIGO PARA LOS TEST ***
 
@@ -62,11 +63,12 @@ describe('AuthRepository', () => {
   });
 
   it('SignUp: create new user with hashed password', async () => {
-    jest.spyOn(mockUserRepositoryTypeOrm, 'findOneBy').mockResolvedValueOnce(undefined);
+    jest
+      .spyOn(mockUserRepositoryTypeOrm, 'findOneBy')
+      .mockResolvedValueOnce(undefined);
     const newUser = await authRepository.signUp(mockUser as User); // as User para evitar los otros campos
 
     expect(newUser).toBeDefined();
     expect(newUser.password).not.toEqual(mockUser.password);
-  });  
-
+  });
 });

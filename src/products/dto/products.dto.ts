@@ -1,20 +1,28 @@
 import { ApiHideProperty } from '@nestjs/swagger';
-import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, IsUrl, Matches, MinLength } from 'class-validator';
+import {
+  IsArray,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsPositive,
+  IsString,
+  IsUrl,
+  Matches,
+  MinLength,
+} from 'class-validator';
 
 export class ProductItemDto {
-
   /**
    * Nombre del producto.
    * @description Debe ser una cadena no vacía con al menos 3 caracteres.
    * @example 'Dell Ultrasharp U2312HM'
-   */  
+   */
   @IsNotEmpty()
   @IsString()
   @MinLength(3)
-  @Matches(
-    /^[a-zA-Z0-9]+$/,
-    { message: `El nombre no debe contener caracteres especiales.` }
-  )
+  @Matches(/^[a-zA-Z0-9]+$/, {
+    message: `El nombre no debe contener caracteres especiales.`,
+  })
   readonly name: string;
 
   @ApiHideProperty()
@@ -75,5 +83,5 @@ export class ProductItemDto {
    */
   @IsNotEmpty()
   @IsString({ each: true })
-  readonly category: string[] | string
+  readonly category: string[] | string;
 }

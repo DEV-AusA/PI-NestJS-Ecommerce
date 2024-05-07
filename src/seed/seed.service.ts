@@ -1,5 +1,5 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
-import * as productsData from "../helpers/preload-products.data.json";
+import * as productsData from '../helpers/preload-products.data.json';
 import { ProductItemDto } from '../products/dto/products.dto';
 import { EntityManager, Repository } from 'typeorm';
 import { Products } from '../products/entities/products.entity';
@@ -8,7 +8,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class SeedService implements OnModuleInit {
-
   constructor(
     @InjectRepository(Products)
     private readonly productsRepository: Repository<Products>,
@@ -23,22 +22,24 @@ export class SeedService implements OnModuleInit {
   }
 
   private async executeSeedProducts() {
-
     let newProduct: Products;
-    
+
     const products = productsData as ProductItemDto[];
 
     try {
-
       for await (const product of products) {
-
         const { category, ...restProduct } = product;
-        
-        const productFinded = await this.productsRepository.findOneBy({ name: restProduct.name});
 
-        if(!productFinded) {
-          const newCategory = await this.categoriesRepository.create({name: category as string});
-          const newCategorySaved = await this.categoriesRepository.save(newCategory);
+        const productFinded = await this.productsRepository.findOneBy({
+          name: restProduct.name,
+        });
+
+        if (!productFinded) {
+          const newCategory = await this.categoriesRepository.create({
+            name: category as string,
+          });
+          const newCategorySaved =
+            await this.categoriesRepository.save(newCategory);
 
           newProduct = this.productsRepository.create({
             ...restProduct,
@@ -47,56 +48,63 @@ export class SeedService implements OnModuleInit {
 
           await this.productsRepository.save(newProduct);
         }
-      }      
+      }
     } catch (error) {
       throw error;
     }
   }
 
   async preloadData() {
-
     const products = productsData as ProductItemDto[];
-    let busyProducts: string[] = [];
+    const busyProducts: string[] = [];
 
     try {
-
       await this.executeSeedProducts();
 
       for await (const product of products) {
+        const productFinded = await this.productsRepository.findOneBy({
+          name: product.name,
+        });
 
-        const productFinded = await this.productsRepository.findOneBy({name: product.name});
-
-        if(productFinded) {
-          const productWithOrder = await this.entityManager.createQueryBuilder()
-          .select('order_details_products.productsId', 'productsId')
-          .from('order_details_products', 'order_details_products')
-          .where('order_details_products.productsId = :id', { id: productFinded.id })
-          .getRawOne();        
+        if (productFinded) {
+          const productWithOrder = await this.entityManager
+            .createQueryBuilder()
+            .select('order_details_products.productsId', 'productsId')
+            .from('order_details_products', 'order_details_products')
+            .where('order_details_products.productsId = :id', {
+              id: productFinded.id,
+            })
+            .getRawOne();
 
           !productWithOrder
-          ? await this.productsRepository.update(productFinded.id, { stock: product.stock })
-          : busyProducts.push(productFinded.name);
-        }    
+            ? await this.productsRepository.update(productFinded.id, {
+                stock: product.stock,
+              })
+            : busyProducts.push(productFinded.name);
+        }
       }
 
       if (busyProducts.length > 0) {
-        
-        Logger.log(`Seed de productos cargado correctamente, estos articulos no se pueden reinicializar porque estan relacionados a una orden: ${busyProducts}`, 'PreloadData-Ecommerce');        
-        const message = { 
-          message: 'Seed de productos cargado correctamente, estos articulos no se pueden reinicializar porque estan relacionados a una orden:',
-          busyProducts
-        }; 
+        Logger.log(
+          `Seed de productos cargado correctamente, estos articulos no se pueden reinicializar porque estan relacionados a una orden: ${busyProducts}`,
+          'PreloadData-Ecommerce',
+        );
+        const message = {
+          message:
+            'Seed de productos cargado correctamente, estos articulos no se pueden reinicializar porque estan relacionados a una orden:',
+          busyProducts,
+        };
+        return message;
+      } else {
+        Logger.log(
+          'Seed de productos cargado correctamente',
+          'PreloadData-Ecommerce',
+        );
+        const message = { message: 'Seed de productos cargado correctamente' };
         return message;
       }
-      else{
-        Logger.log('Seed de productos cargado correctamente', 'PreloadData-Ecommerce');
-        const message = {message: 'Seed de productos cargado correctamente'};
-        return message;
-      }      
-    }
-    catch (error) {
-      throw error;      
+    } catch (error) {
+      throw error;
     }
   }
-
 }
