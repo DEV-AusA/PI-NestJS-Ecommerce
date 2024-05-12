@@ -20,7 +20,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy) {
   async validate(accessToken: string, refreshToken: string, profile: Profile) {
     // console.log(accessToken);
     // console.log(refreshToken); // verificar el token refresh undefined
-    // console.log(profile);
+    console.log(profile._json);
     const authGoogle: AuthGoogle = {
       name: profile.name.givenName,
       lastName: profile.name.familyName,
@@ -28,6 +28,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy) {
       photos: profile.photos[0].value,
       provider: profile.provider,
     };
-    const userValidated = await this.authService.validateUserOAuth(authGoogle);
+    // const userValidated = agregar lo de abajo
+    await this.authService.validateUserOAuth(authGoogle);
   }
 }

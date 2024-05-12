@@ -3,8 +3,6 @@ import { AppModule } from './app.module';
 import { loggerGlobal } from './middlewares/logger.middleware';
 import { ValidationPipe } from '@nestjs/common';
 import { DataLoaderService } from './helpers/preload.data.helper';
-import { auth } from 'express-openid-connect';
-import { config as configAuth0 } from '../config/auth0';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
